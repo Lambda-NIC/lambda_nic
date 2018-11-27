@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Outfiles from Netronome Project Studio
+/*/out
+*.nffw
