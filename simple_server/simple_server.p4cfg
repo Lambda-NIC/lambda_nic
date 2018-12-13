@@ -1,0 +1,40 @@
+{
+    "tables": {
+        "switch_pkt": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "v0.1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "ingress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "p1"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "p1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "egress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "v0.1"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
