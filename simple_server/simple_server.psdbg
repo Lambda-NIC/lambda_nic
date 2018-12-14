@@ -18,7 +18,12 @@
         "CreditTrackerWatches": {}, 
         "CustomOptions": {
             "ProjectWorkspace": {
-                "Options": [], 
+                "Options": [
+                    "[WorkState_v1_2]", 
+                    "ptn_Child1=Frames", 
+                    "[WorkState_v1_2.Frames]", 
+                    "ptn_Child1=ChildFrames"
+                ], 
                 "Type": 4
             }, 
             "ThreadWindowWorkspace": {
@@ -30,7 +35,10 @@
         "ForeignModelOptions": {}, 
         "HardwareConfiguration": {
             "AgilioCX": {
-                "NoConnection": true
+                "ConnectNetwork": "mendel1.stanford.edu", 
+                "HostDeviceNumber": "0", 
+                "HostPortNumber": "20406", 
+                "RTEPortNumber": "20206"
             }
         }, 
         "HardwarePollingOptions": {

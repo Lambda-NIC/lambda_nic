@@ -336,7 +336,7 @@
                         "island_partial_fw_map": {
                             "i8": "catamaran"
                         }, 
-                        "map_file": ".\\simple_switch_AgilioCX", 
+                        "map_file": ".\\simple_server_AgilioCX", 
                         "memories": {}, 
                         "nn_chains": {}, 
                         "produce_u_cstore_ecc": true, 
@@ -1474,9 +1474,6 @@
                 }, 
                 ".\\out\\pif_tables.c": {
                     "update": "YES"
-                }, 
-                ".\\plugin.c": {
-                    "update": "YES"
                 }
             }, 
             "microcode": {
@@ -1493,11 +1490,7 @@
                     "update": "YES"
                 }
             }, 
-            "p4userconfigs": {
-                ".\\simple_server.p4cfg": {
-                    "update": "YES"
-                }
-            }
+            "p4userconfigs": {}
         }, 
         "folder_mapping": {}, 
         "legacy_mode": false, 
