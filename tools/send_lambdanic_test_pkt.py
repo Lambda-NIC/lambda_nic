@@ -11,7 +11,8 @@ import struct
 
 SRC_NUM = int(sys.argv[1])
 DST_NUM = int(sys.argv[2])
-UDP_PORT = int(sys.argv[3])
+SRC_UDP_PORT = 2222
+DST_UDP_PORT = int(sys.argv[3])
 
 IFACE = "vf0_1"
 SRC_ETH_ADDR = "00:15:4d:00:%d%d:01" % (SRC_NUM, SRC_NUM)
@@ -33,7 +34,7 @@ class Sniffer(Thread):
         self.socket = conf.L2listen(
             type=ETH_P_ALL,
             iface=self.interface,
-            filter="ip"
+            filter="udp"
         )
 
         sniff(
@@ -50,9 +51,9 @@ class Sniffer(Thread):
         return self.stop_sniffer.isSet()
 
     def print_packet(self, packet):
-        ip_layer = packet.getlayer(IP)
-        if ip_layer is not None:
-            #if ip_layer.src == DST_IP:
+        udp_layer = packet.getlayer(UDP)
+        if udp_layer is not None:
+            ip_layer = packet.getlayer(IP)
             print("[!] New Packet: {src} -> {dst}".format(src=ip_layer.src, dst=ip_layer.dst))
 
 sniffer = Sniffer()
@@ -62,10 +63,10 @@ sniffer.start()
 
 print(SRC_IP, SRC_ETH_ADDR, DST_IP, DST_ETH_ADDR)
 
-data = b"dude"
-ether = Ether(dst=DST_ETH_ADDR)
+data = "dude"
+ether = Ether(src=SRC_ETH_ADDR, dst=DST_ETH_ADDR)
 ip = IP(src=SRC_IP, dst=DST_IP, len= 28 + len(data))
-udp = UDP(sport=UDP_PORT, dport=UDP_PORT, len= 8 + len(data))
+udp = UDP(sport=SRC_UDP_PORT, dport=DST_UDP_PORT, len= 8 + len(data), chksum=0)
 payload = Raw(load=data)
 packet = ether / ip / udp / payload
 packet.show()
