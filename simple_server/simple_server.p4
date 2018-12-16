@@ -68,8 +68,12 @@ calculated_field udp.checksum {
 control ingress {
     if (valid(udp)) {
         if (valid(pload)) {
-            apply(add_payload);
-            apply(return_pkt);
+            if (meta.payloadOut == 0) {
+                apply(out_payload);
+            } else {
+                apply(add_payload);
+                apply(return_pkt);
+            }
         } else {
             apply(switch_pkt2);
         }
@@ -104,6 +108,16 @@ action set_return_hop() {
 
 action do_serve_request() {
     serve_request();
+}
+
+action do_out_payload() {
+    modify_field(pload.out, 1);
+}
+
+table out_payload {
+    actions {
+        do_out_payload;
+    }
 }
 
 table add_payload {

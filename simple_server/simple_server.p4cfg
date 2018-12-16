@@ -8,6 +8,14 @@
                 "name": "default"
             }
         }, 
+        "out_payload": {
+            "default_rule": {
+                "action": {
+                    "type": "do_out_payload"
+                }, 
+                "name": "default"
+            }
+        }, 
         "add_payload": {
             "default_rule": {
                 "action": {

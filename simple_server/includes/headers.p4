@@ -35,7 +35,8 @@ header_type udp_t {
 
 header_type payload_t {
     fields {
-        p    : 128;
+        out  : 8;
+        p    : 120;
     }
 }
 
@@ -49,6 +50,7 @@ header_type meta_t {
         tmpEthAddr: 48;
         tmpIpAddr: 32;
         tmpUdpPort: 16;
+        payloadOut:  8;
     }
 }
 

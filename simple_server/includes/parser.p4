@@ -47,5 +47,6 @@ parser parse_udp {
 
 parser parse_payload {
     extract(pload);
+    set_metadata(meta.payloadOut, pload.out);
     return ingress;
 }
