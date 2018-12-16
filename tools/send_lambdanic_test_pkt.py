@@ -60,21 +60,21 @@ sniffer = Sniffer()
 print("[*] Start sniffing...")
 sniffer.start()
 
-print(SRC_IP, DST_IP, DST_ETH_ADDR)
+print(SRC_IP, SRC_ETH_ADDR, DST_IP, DST_ETH_ADDR)
 
-data = b"world"
-data = struct.pack(">I", len(data)) +  data
+data = b"dude"
 ether = Ether(dst=DST_ETH_ADDR)
-ip = IP(src=SRC_IP, dst=DST_IP)
-udp = UDP(sport=UDP_PORT, dport=UDP_PORT)
+ip = IP(src=SRC_IP, dst=DST_IP, len= 28 + len(data))
+udp = UDP(sport=UDP_PORT, dport=UDP_PORT, len= 8 + len(data))
 payload = Raw(load=data)
-packet = str(ether / ip / udp / payload)
+packet = ether / ip / udp / payload
+packet.show()
 
 try:
     while True:
         sleep(1)
         # Send the packet to IFACE
-        sendp(packet, iface=IFACE, count=10)
+        sendp(packet, iface=IFACE, count=1)
 
 except KeyboardInterrupt:
     print("[*] Stop sniffing")
