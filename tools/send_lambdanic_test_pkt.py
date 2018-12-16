@@ -9,13 +9,15 @@ from scapy.all import Ether, IP, UDP, Raw
 from threading import Thread, Event
 import struct
 
-DST_ETH_ADDR = "00:15:4d:13:81:bf"
-DST_ETH_ADDR = "00:15:4d:00:00:01"
-SRC_IP = "20.20.20.102"
-DST_IP = "20.20.20.101"
-DST_IP = "20.20.20.111"
-IFACE = "enp94s0np1"
-UDP_PORT = 4369
+SRC_NUM = int(sys.argv[1])
+DST_NUM = int(sys.argv[2])
+UDP_PORT = int(sys.argv[3])
+
+IFACE = "vf0_1"
+SRC_ETH_ADDR = "00:15:4d:00:%d%d:01" % (SRC_NUM, SRC_NUM)
+DST_ETH_ADDR = "00:15:4d:00:%d%d:01" % (DST_NUM, DST_NUM)
+SRC_IP = "20.20.2%d.101" % SRC_NUM
+DST_IP = "20.20.2%d.101" % DST_NUM
 
 class Sniffer(Thread):
     def  __init__(self, interface=IFACE):
