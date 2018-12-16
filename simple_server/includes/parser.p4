@@ -38,6 +38,7 @@ parser parse_ipv4 {
 
 parser parse_udp {
     extract(udp);
+    set_metadata(meta.tmpUdpPort, udp.dstPort);
     return  select(udp.dstPort) {
         SERVER_PORT : parse_payload;
         default : ingress;

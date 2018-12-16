@@ -48,11 +48,10 @@ header_type meta_t {
     fields {
         tmpEthAddr: 48;
         tmpIpAddr: 32;
+        tmpUdpPort: 16;
     }
 }
 
 metadata meta_t meta;
-
-
 
 primitive_action serve_request();

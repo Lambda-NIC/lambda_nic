@@ -84,13 +84,22 @@ action set_nhop(port) {
     modify_field(standard_metadata.egress_spec, port);
 }
 
-
 action set_return_hop() {
-    modify_field(ipv4.dstAddr, ipv4.srcAddr);
-    modify_field(ipv4.srcAddr, meta.tmpIpAddr);
+    // Swap Eth Addr
     modify_field(eth.dstAddr, eth.srcAddr);
     modify_field(eth.srcAddr, meta.tmpEthAddr);
-    modify_field(standard_metadata.egress_spec, standard_metadata.ingress_port);
+
+    // Swap IP Addr
+    modify_field(ipv4.dstAddr, ipv4.srcAddr);
+    modify_field(ipv4.srcAddr, meta.tmpIpAddr);
+
+    // Swap UDP Port
+    modify_field(udp.dstPort, udp.srcPort);
+    modify_field(udp.srcPort, meta.tmpUdpPort);
+
+    // Swap egress Port
+    modify_field(standard_metadata.egress_spec,
+                 standard_metadata.ingress_port);
 }
 
 action do_serve_request() {
@@ -131,7 +140,6 @@ table switch_pkt2 {
 
 
 // Egress Control
-
 control egress {
 
 }

@@ -11,7 +11,7 @@
 
 // we define a static return string
 // Should this be shared?
-static uint8_t reply_string[] = {'h', 'i', ':', ' '};
+//static uint8_t reply_string[] = {'h', 'i', ':', ' '};
 
 #define REPLY_LEN 4
 #define UDP_HDR_LEN 8
@@ -19,15 +19,15 @@ static uint8_t reply_string[] = {'h', 'i', ':', ' '};
 int pif_plugin_serve_request(EXTRACTED_HEADERS_T *headers,
                              MATCH_DATA_T *match_data)
 {
-    //uint8_t tmp[16];
-    //uint32_t p_len;
-
     // Get the payload
     PIF_PLUGIN_ipv4_T *ipv4 = pif_plugin_hdr_get_ipv4(headers);
     PIF_PLUGIN_udp_T *udp = pif_plugin_hdr_get_udp(headers);
     PIF_PLUGIN_pload_T *pload = pif_plugin_hdr_get_pload(headers);
     //uint8_t *ptr = (void *) pload;
     //p_len = udp->length_ - UDP_HDR_LEN;
+
+    //uint8_t tmp[16];
+    //uint32_t p_len;
 
     //pload->__p_1 = pload->__p_0;
     pload->__p_0 = 1751726624;
