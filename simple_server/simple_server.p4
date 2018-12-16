@@ -29,46 +29,36 @@ field_list_calculation ipv4_checksum {
 }
 
 calculated_field ipv4.hdrChecksum  {
-    verify ipv4_checksum; //Packet received back from controller where NAT is also done gets dropped if verify is enabled. How can we enable this for all other ports? (standard_metadata.ingress_port?)
+    verify ipv4_checksum;
     update ipv4_checksum; 
 }
 // /IPv4 Checksum
-
-
-//TCP Checksum
-field_list tcp_ipv4_checksum_list {
+//Similarly, we need to update UDP Checksum. We can't check it, though...
+/*
+field_list udp_checksum_list {
     ipv4.srcAddr;
     ipv4.dstAddr;
     8'0;
     ipv4.protocol;
-    meta.tcpLength;
-    tcp.srcPort;
-    tcp.dstPort;
-    tcp.seqNo;
-    tcp.ackNo;
-    tcp.dataOffset;
-    tcp.res;
-    tcp.ecn;
-    tcp.ctrl;
-    tcp.window;
-    tcp.urgentPtr;
+    udp.length_;
+    udp.srcPort;
+    udp.dstPort;
+    udp.length_ ;
     payload;
 }
 
-field_list_calculation tcp_ipv4_checksum {
+field_list_calculation udp_checksum {
     input {
-        tcp_ipv4_checksum_list;
+        udp_checksum_list;
     }
     algorithm : csum16;
     output_width : 16;
 }
 
-calculated_field tcp.checksum  {
-    verify tcp_ipv4_checksum if (valid(ipv4));   //Packet received back from controller where NAT is also done gets dropped if verify is enabled. How can we enable this for all other ports? (standard_metadata.ingress_port?)
-    update tcp_ipv4_checksum if (valid(ipv4));
+calculated_field udp.checksum {
+    update udp_checksum;
 }
-//TCP Checksum
-
+*/
 
 //Checksum
 
@@ -79,19 +69,26 @@ control ingress {
     if (valid(udp)) {
         if (valid(pload)) {
             apply(add_payload);
+            apply(return_pkt);
+        } else {
+            apply(switch_pkt2);
         }
+    } else {
         apply(switch_pkt);
     }
 }
 
 // /Ingress Control
 
-primitive_action serve_request();
+action set_nhop(port) {
+    modify_field(standard_metadata.egress_spec, port);
+}
 
-action set_nhop() {
+
+action set_return_hop() {
     modify_field(ipv4.dstAddr, ipv4.srcAddr);
-    modify_field(eth.dstAddr, eth.srcAddr);
     modify_field(ipv4.srcAddr, meta.tmpIpAddr);
+    modify_field(eth.dstAddr, eth.srcAddr);
     modify_field(eth.srcAddr, meta.tmpEthAddr);
     modify_field(standard_metadata.egress_spec, standard_metadata.ingress_port);
 }
@@ -106,9 +103,28 @@ table add_payload {
     }
 }
 
-table switch_pkt {
+table return_pkt {
     actions { 
-        set_nhop; 
+        set_return_hop;
+    }
+}
+
+
+table switch_pkt {
+    reads {
+        standard_metadata.ingress_port : exact;
+    }
+    actions {
+        set_nhop;
+    }
+}
+
+table switch_pkt2 {
+    reads {
+        standard_metadata.ingress_port : exact;
+    }
+    actions {
+        set_nhop;
     }
 }
 //

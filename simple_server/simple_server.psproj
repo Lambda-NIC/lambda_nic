@@ -106,7 +106,7 @@
                         "nfd_enabled": true, 
                         "num_assign_worker_mes": -1, 
                         "obj_target": false, 
-                        "p4_user_config": "", 
+                        "p4_user_config": ".\\simple_server.p4cfg", 
                         "reduced_thread_usage": true, 
                         "shared_codestore": false, 
                         "zero_new_headers": false
@@ -115,7 +115,7 @@
                     "tool": "p4compiler"
                 }, 
                 ".\\AgilioCX": {
-                    "build_required": true, 
+                    "build_required": false, 
                     "list_assignments": {
                         "i32.me0": [
                             "pif_app_nfd.list"
@@ -351,7 +351,7 @@
                     "tool": "linker"
                 }, 
                 ".\\out\\app_master.list\\app_master.list": {
-                    "build_required": true, 
+                    "build_required": false, 
                     "input_files": {
                         "c_source_files": [
                             "$(SDKDIR)\\p4\\components\\nfp_pif\\me\\apps\\pif_app_nfd\\src\\app_master.c", 
@@ -493,7 +493,7 @@
                     "tool": "assembler"
                 }, 
                 ".\\out\\flowcache_timeout_emu0.list\\flowcache_timeout_emu0.list": {
-                    "build_required": true, 
+                    "build_required": false, 
                     "input_files": {
                         "c_source_files": [
                             "$(SDKDIR)\\p4\\components\\nfp_pif\\me\\apps\\common\\src\\dcfl_init.c", 
@@ -653,7 +653,7 @@
                     "tool": "assembler"
                 }, 
                 ".\\out\\nfd_pcie0_notify.list\\nfd_pcie0_notify.list": {
-                    "build_required": true, 
+                    "build_required": false, 
                     "input_files": {
                         "c_source_files": [
                             "$(SDKDIR)\\p4\\components\\ng_nfd\\me\\blocks\\vnic\\pci_in\\notify.c", 
@@ -713,7 +713,7 @@
                     "tool": "compiler"
                 }, 
                 ".\\out\\nfd_pcie0_pci_in_gather.list\\nfd_pcie0_pci_in_gather.list": {
-                    "build_required": true, 
+                    "build_required": false, 
                     "input_files": {
                         "c_source_files": [
                             "$(SDKDIR)\\p4\\components\\ng_nfd\\me\\blocks\\vnic\\pci_in_me0.c", 
@@ -773,7 +773,7 @@
                     "tool": "compiler"
                 }, 
                 ".\\out\\nfd_pcie0_pci_in_issue0.list\\nfd_pcie0_pci_in_issue0.list": {
-                    "build_required": true, 
+                    "build_required": false, 
                     "input_files": {
                         "c_source_files": [
                             "$(SDKDIR)\\p4\\components\\ng_nfd\\me\\blocks\\vnic\\pci_in_me1.c", 
@@ -833,7 +833,7 @@
                     "tool": "compiler"
                 }, 
                 ".\\out\\nfd_pcie0_pci_out_me0.list\\nfd_pcie0_pci_out_me0.list": {
-                    "build_required": true, 
+                    "build_required": false, 
                     "input_files": {
                         "c_source_files": [
                             "$(SDKDIR)\\p4\\components\\ng_nfd\\me\\blocks\\vnic\\pci_out_me0.c", 
@@ -990,7 +990,7 @@
                     "tool": "assembler"
                 }, 
                 ".\\out\\nfd_svc.list\\nfd_svc.list": {
-                    "build_required": true, 
+                    "build_required": false, 
                     "input_files": {
                         "c_source_files": [
                             "$(SDKDIR)\\p4\\components\\ng_nfd\\me\\blocks\\vnic\\svc_me.c", 
@@ -1056,7 +1056,7 @@
                     "tool": "compiler"
                 }, 
                 ".\\out\\pif_app_nfd.list\\pif_app_nfd.list": {
-                    "build_required": true, 
+                    "build_required": false, 
                     "input_files": {
                         "c_source_files": [
                             "$(SDKDIR)\\p4\\components\\nfp_pif\\me\\apps\\common\\src\\pif_app_nfd.c", 
@@ -1490,7 +1490,11 @@
                     "update": "YES"
                 }
             }, 
-            "p4userconfigs": {}
+            "p4userconfigs": {
+                ".\\simple_server.p4cfg": {
+                    "update": "YES"
+                }
+            }
         }, 
         "folder_mapping": {}, 
         "legacy_mode": false, 
@@ -1510,7 +1514,7 @@
             }
         }, 
         "project_name": "simple_server", 
-        "project_path": "Z:\\Users\\seanchoi\\workspace\\lambda_nic\\simple_server\\simple_server.psproj", 
+        "project_path": "Z:\\lambda_nic\\simple_server\\simple_server.psproj", 
         "sim_startup_options": {
             "imported_var_data_file": "", 
             "sim_profile_started": true, 
