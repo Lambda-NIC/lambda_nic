@@ -36,6 +36,7 @@ calculated_field ipv4.hdrChecksum  {
 
 
 //TCP Checksum
+/*
 field_list tcp_ipv4_checksum_list {
     ipv4.srcAddr;
     ipv4.dstAddr;
@@ -70,7 +71,6 @@ calculated_field tcp.checksum  {
 // /TCP Checksum
 
 //Similarly, we need to update UDP Checksum. We can't check it, though...
-/*
 field_list udp_checksum_list {
     ipv4.srcAddr;
     ipv4.dstAddr;
