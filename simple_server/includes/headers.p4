@@ -24,6 +24,22 @@ header_type ipv4_t {
     }
 }
 
+header_type tcp_t {
+    fields {
+        srcPort : 16;
+        dstPort : 16;
+        seqNo : 32;
+        ackNo : 32;
+        dataOffset :4;
+        res : 3;
+        ecn : 3;
+        ctrl : 6;
+        window : 16;
+        checksum : 16;
+        urgentPtr : 16;
+    }
+}
+
 header_type udp_t {
     fields {
         srcPort : 16;
@@ -42,6 +58,7 @@ header_type payload_t {
 header ethernet_t eth;
 header ipv4_t ipv4;
 header udp_t udp;
+header tcp_t tcp;
 header payload_t pload;
 
 header_type meta_t {
@@ -49,7 +66,7 @@ header_type meta_t {
         tmpEthAddr: 48;
         tmpIpAddr: 32;
         tmpUdpPort: 16;
-        payloadOut:  8;
+        tcpLength : 16;
     }
 }
 
