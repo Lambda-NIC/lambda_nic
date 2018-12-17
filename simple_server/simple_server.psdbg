@@ -457,7 +457,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i1.me1": {
                             "MicroEngineContexts": {
@@ -510,7 +515,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i1.me2": {
                             "MicroEngineContexts": {
@@ -563,7 +573,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i1.me3": {
                             "MicroEngineContexts": {
@@ -616,7 +631,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i32.me0": {
                             "MicroEngineContexts": {
@@ -4149,7 +4169,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i37.me1": {
                             "MicroEngineContexts": {
@@ -4202,7 +4227,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i37.me10": {
                             "MicroEngineContexts": {
@@ -4255,7 +4285,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i37.me11": {
                             "MicroEngineContexts": {
@@ -4308,7 +4343,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i37.me2": {
                             "MicroEngineContexts": {
@@ -4361,7 +4401,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i37.me3": {
                             "MicroEngineContexts": {
@@ -4414,7 +4459,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i37.me4": {
                             "MicroEngineContexts": {
@@ -4467,7 +4517,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i37.me5": {
                             "MicroEngineContexts": {
@@ -4520,7 +4575,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i37.me6": {
                             "MicroEngineContexts": {
@@ -4573,7 +4633,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i37.me7": {
                             "MicroEngineContexts": {
@@ -4626,7 +4691,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i37.me8": {
                             "MicroEngineContexts": {
@@ -4679,7 +4749,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i37.me9": {
                             "MicroEngineContexts": {
@@ -4732,7 +4807,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i4.me0": {
                             "MicroEngineContexts": {
@@ -5249,7 +5329,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i5.me1": {
                             "MicroEngineContexts": {
@@ -5302,7 +5387,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i5.me2": {
                             "MicroEngineContexts": {
@@ -5355,7 +5445,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i5.me3": {
                             "MicroEngineContexts": {
@@ -5408,7 +5503,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }
                     }
                 }

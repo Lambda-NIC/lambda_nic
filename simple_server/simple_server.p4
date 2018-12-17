@@ -68,13 +68,12 @@ calculated_field udp.checksum {
 control ingress {
     if (valid(udp)) {
         if (valid(pload)) {
-            if (meta.payloadOut == 0) {
-                apply(out_payload);
-            } else {
-                apply(add_payload);
-                apply(return_pkt);
-            }
+            apply(add_payload);
+            apply(return_pkt);
         } else {
+            if (udp.dstPort == INTERIM_PORT) {
+                apply(out_payload);
+            }
             apply(switch_pkt2);
         }
     } else {
@@ -111,7 +110,7 @@ action do_serve_request() {
 }
 
 action do_out_payload() {
-    modify_field(pload.out, 1);
+    modify_field(udp.dstPort, SERVER_PORT);
 }
 
 table out_payload {

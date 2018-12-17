@@ -10,7 +10,7 @@
 #define UDP_PROTOCOL 0x11
 
 #define SERVER_PORT 0x1111
-
+#define INTERIM_PORT 0x2222
 
 parser start {
     return parse_eth;
@@ -47,6 +47,5 @@ parser parse_udp {
 
 parser parse_payload {
     extract(pload);
-    set_metadata(meta.payloadOut, pload.out);
     return ingress;
 }

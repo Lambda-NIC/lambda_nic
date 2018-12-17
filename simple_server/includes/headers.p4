@@ -35,8 +35,7 @@ header_type udp_t {
 
 header_type payload_t {
     fields {
-        out  : 8;
-        p    : 120;
+        p    : 128;
     }
 }
 
