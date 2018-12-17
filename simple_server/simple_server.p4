@@ -136,6 +136,9 @@ action set_return_hop() {
     modify_field(udp.dstPort, udp.srcPort);
     modify_field(udp.srcPort, meta.tmpUdpPort);
 
+    // Remove UDP
+    modify_field(udp.checksum, 0);
+
     // Swap egress Port
     modify_field(standard_metadata.egress_spec,
                  standard_metadata.ingress_port);
