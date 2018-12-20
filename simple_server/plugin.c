@@ -1,9 +1,9 @@
-#include <pif_plugin.h>
-#include <pif_plugin_metadata.h>
+#include <memory.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <memory.h>
+#include <pif_plugin.h>
+#include <pif_plugin_metadata.h>
 #include <nfp/me.h>
 #include <nfp/cls.h>
 #include <nfp/mem_atomic.h>
@@ -388,7 +388,7 @@ int pif_plugin_serve_request(EXTRACTED_HEADERS_T *headers,
     PIF_PLUGIN_udp_T *udp = pif_plugin_hdr_get_udp(headers);
     PIF_PLUGIN_pload_T *pload = pif_plugin_hdr_get_pload(headers);
     
-    uint32_t job_id = pload->id;
+    uint32_t job_id = pload->jobId;
     if (job_id == 0) {
         //uint8_t *ptr = (void *) pload;
         //p_len = udp->length_ - UDP_HDR_LEN;

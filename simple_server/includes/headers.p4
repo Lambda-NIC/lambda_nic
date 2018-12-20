@@ -51,8 +51,8 @@ header_type udp_t {
 
 header_type payload_t {
     fields {
-        id   : 32;
-        p    : 128;
+        jobId   : 32;
+        p       : 128;
     }
 }
 
