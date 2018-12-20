@@ -326,8 +326,8 @@ create_udp_packet(
 	/* Build up the packet */
 	reg_zero(Pdata->__raw, sizeof(struct packet_tx_eth_ip_tcp));
     
-    memcpy_mem_mem(&(Pdata->eth_dst), &eth_dst, ETH_BYTES);
-    memcpy_mem_mem(&(Pdata->eth_src), &eth_src, ETH_BYTES);
+    memcpy_lmem_mem(&(Pdata->eth_dst), &eth_dst, ETH_BYTES);
+    memcpy_lmem_mem(&(Pdata->eth_src), &eth_src, ETH_BYTES);
 	Pdata->eth_type = NET_ETH_TYPE_IPV4;
 
 	Pdata->ip.ver = 4;
