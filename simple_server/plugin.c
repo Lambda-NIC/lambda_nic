@@ -1,7 +1,8 @@
 #include <pif_plugin.h>
 #include <pif_plugin_metadata.h>
-
+#include <string.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <nfp/me.h>
 #include <nfp/cls.h>
 #include <nfp/mem_atomic.h>
@@ -42,6 +43,7 @@ const char delims[] = "\r\n";
 
 #define REPLY_LEN 4
 #define UDP_HDR_LEN 8
+#define ETH_BYTES 6
 #define MAC_CHAN_PER_PORT   8
 #define TMQ_PER_PORT        (MAC_CHAN_PER_PORT * 8)
 #define MAC_TO_PORT(x)      (x / MAC_CHAN_PER_PORT)
@@ -82,10 +84,9 @@ int first = 1;
 struct packet_tx_eth_ip_tcp {
 	union {
 		__packed struct {
-			uint16_t        eth_dst_hi;
-			uint32_t        eth_dst_lo;
-			uint32_t        eth_src_hi;
-			uint16_t        eth_src_lo;
+            // Check if this matches what is defined in pif_headers.h
+			uint8_t         eth_dst[ETH_BYTES];
+			uint8_t         eth_src[ETH_BYTES];
 			uint16_t        eth_type;
 			struct ip4_hdr  ip;
 			struct tcp_hdr  tcp;
@@ -98,10 +99,9 @@ struct packet_tx_eth_ip_tcp {
 struct packet_tx_eth_ip_udp {
 	union {
 		__packed struct {
-			uint16_t        eth_dst_hi;
-			uint32_t        eth_dst_lo;
-			uint32_t        eth_src_hi;
-			uint16_t        eth_src_lo;
+            // Check if this matches what is defined in pif_headers.h
+			uint8_t         eth_dst[ETH_BYTES];
+			uint8_t         eth_src[ETH_BYTES];
 			uint16_t        eth_type;
 			struct ip4_hdr  ip;
 			struct udp_hdr  udp;
@@ -202,10 +202,13 @@ send_tcp_packet(uint32_t srcAddr, uint32_t dstAddr,
 	/* Build up the packet */
 	reg_zero(Pdata.__raw, sizeof(struct packet_tx_eth_ip_tcp));
  
-	Pdata.eth_dst_hi = 0x9090;
-	Pdata.eth_dst_lo = 0x90909090;
-	Pdata.eth_src_hi = 0x00150015;
-	Pdata.eth_src_lo = 0x0015;
+    for (i = 0; i < ETH_BYTES; i++) {
+	    Pdata.eth_dst[i] = 0x90;
+    }
+    for (i = 0; i < ETH_BYTES/2; i += 2) {
+        Pdata.eth_src[i] = 0x00;
+        Pdata.eth_src[i + 1] = 0x15;
+    }
 	Pdata.eth_type = NET_ETH_TYPE_IPV4;
 
 	Pdata.ip.ver = 4;
@@ -238,60 +241,140 @@ send_tcp_packet(uint32_t srcAddr, uint32_t dstAddr,
 	send_packet(&(Pdata.__raw), sizeof(struct packet_tx_eth_ip_tcp));	
 }
 
-
-static void
-send_udp_packet(uint32_t srcAddr, uint32_t dstAddr,
-				uint16_t srcPort, uint16_t dstPort)
-{
-	int i;
-	/* We write to packet data here and copy it into the ctm buffer */
-	__lmem struct packet_tx_eth_ip_udp Pdata;
-
-	/* Build up the packet */
-	reg_zero(Pdata.__raw, sizeof(struct packet_tx_eth_ip_tcp));
- 
-	Pdata.eth_dst_hi = 0x9090;
-	Pdata.eth_dst_lo = 0x90909090;
-	Pdata.eth_src_hi = 0x00150015;
-	Pdata.eth_src_lo = 0x0015;
-	Pdata.eth_type = NET_ETH_TYPE_IPV4;
-
-	Pdata.ip.ver = 4;
-	Pdata.ip.hl = 5;
-	Pdata.ip.tos = 0;
-	Pdata.ip.len = sizeof(Pdata.ip) +
-		sizeof(Pdata.udp) + sizeof(Pdata.udp_data);
-	Pdata.ip.frag = 0;
-	Pdata.ip.ttl = 64;
-	Pdata.ip.proto = 6;
-	Pdata.ip.sum = 0;  /* Let MAC take care of this */
-	Pdata.ip.src = srcAddr;
-	Pdata.ip.dst = dstAddr;
-
-	Pdata.udp.sport = srcPort;
-	Pdata.udp.dport = dstPort;
-    Pdata.udp.sum = 0; // Ignore checksum
-    Pdata.udp.len = sizeof(Pdata.udp) + sizeof(Pdata.udp_data);
- 	
-	/* fill up payload if required */
-	for (i = 0; i < UDP_DATA_LEN; i++)
-		Pdata.udp_data[i] = i;
-	
-	
-	send_packet(&(Pdata.__raw), sizeof(struct packet_tx_eth_ip_udp));	
+// Sets the udp packet to be a get packet
+static void create_get_req(struct packet_tx_eth_ip_udp *Pdata,
+                           char* key, int key_len) {
+    int i;
+    int pos = 0;
+    for (i = 0; i < sizeof(getcmd); i++) {
+        Pdata->udp_data[pos] = getcmd[i];
+        pos++;
+    }
+    for (i = 0; i < key_len; i++) {
+        Pdata->udp_data[pos] = key[i];
+        pos++;
+    }
+    for (i = 0; i < sizeof(delims); i++) {
+        Pdata->udp_data[pos] = delims[i];
+        pos++;
+    }
+    // Set the length correctly.
+	Pdata->ip.len = sizeof(Pdata->ip) + sizeof(Pdata->udp) + pos;
+    Pdata->udp.len = sizeof(Pdata->udp) + pos;
 }
 
-int pif_plugin_send_pkt(EXTRACTED_HEADERS_T *headers,
-                        MATCH_DATA_T *match_data)
+// Sets the udp packet to be a get packet
+static void create_set_req(__lmem struct packet_tx_eth_ip_udp *Pdata,
+                           char* key, char* key_len_str,
+                           char* value, char* val_len_str)
+{
+    // set <key> <flags> <exptime> <bytes>\r\n<datablock>\r\n
+    int i;
+    int pos = 0;
+    int key_len; 
+    int val_len;
+
+    // TODO: Optimize here.
+    strtol_mem(&key_len, &key_len_str, 10);
+    strtol_mem(&val_len, &val_len_str, 10);
+    for (i = 0; i < sizeof(setcmd); i++) {
+        Pdata->udp_data[pos] = setcmd[i];
+        pos++;
+    }
+    for (i = 0; i < key_len; i++) {
+        Pdata->udp_data[pos] = key[i];
+        pos++;
+    }
+    // Adding a space after the key.
+    Pdata->udp_data[pos] = ' ';
+    pos++;
+    for (i = 0; i < sizeof(setopts); i++) {
+        Pdata->udp_data[pos] = setopts[i];
+        pos++;
+    }
+    for (i = 0; i < strlen_mem(val_len_str); i++) {
+        Pdata->udp_data[pos] = val_len_str[i];
+        pos++;
+    }
+    for (i = 0; i < sizeof(delims); i++) {
+        Pdata->udp_data[pos] = delims[i];
+        pos++;
+    }
+    for (i = 0; i < val_len; i++) {
+        Pdata->udp_data[pos] = value[i];
+        pos++;
+    }
+    for (i = 0; i < sizeof(delims); i++) {
+        Pdata->udp_data[pos] = delims[i];
+        pos++;
+    }
+    // Set the length correctly.
+	Pdata->ip.len = sizeof(Pdata->ip) + sizeof(Pdata->udp) + pos;
+    Pdata->udp.len = sizeof(Pdata->udp) + pos;
+}
+
+
+static void
+create_udp_packet(
+    __lmem struct packet_tx_eth_ip_udp *Pdata,
+    uint8_t eth_dst[ETH_BYTES],
+    uint8_t eth_src[ETH_BYTES],
+    uint32_t src_addr, uint32_t dst_addr,
+	uint16_t src_port, uint16_t dst_port)
+{
+	/* Build up the packet */
+	reg_zero(Pdata->__raw, sizeof(struct packet_tx_eth_ip_tcp));
+    
+    memcpy_mem_mem(&(Pdata->eth_dst), &eth_dst, ETH_BYTES);
+    memcpy_mem_mem(&(Pdata->eth_src), &eth_src, ETH_BYTES);
+	Pdata->eth_type = NET_ETH_TYPE_IPV4;
+
+	Pdata->ip.ver = 4;
+	Pdata->ip.hl = 5;
+	Pdata->ip.tos = 0;
+    // This is set when payload is set
+	//Pdata.ip.len = sizeof(Pdata.ip) + sizeof(Pdata.udp).
+	Pdata->ip.frag = 0;
+	Pdata->ip.ttl = 64;
+	Pdata->ip.proto = 6;
+	Pdata->ip.sum = 0;  /* Let MAC take care of this */
+	Pdata->ip.src = src_addr;
+	Pdata->ip.dst = dst_addr;
+
+	Pdata->udp.sport = src_port;
+	Pdata->udp.dport = dst_port;
+    Pdata->udp.sum = 0; // Ignore checksum
+    
+    // Also set when payload is set.
+    //Pdata.udp.len = sizeof(Pdata.udp) + sizeof(Pdata.udp_data);
+	
+}
+
+int send_cache_set_pkt(EXTRACTED_HEADERS_T *headers,
+                       MATCH_DATA_T *match_data)
 {
     // Get the payload
+    PIF_PLUGIN_eth_T *eth = pif_plugin_hdr_get_eth(headers);
     PIF_PLUGIN_ipv4_T *ipv4 = pif_plugin_hdr_get_ipv4(headers);
     PIF_PLUGIN_udp_T *udp = pif_plugin_hdr_get_udp(headers);
     PIF_PLUGIN_pload_T *pload = pif_plugin_hdr_get_pload(headers);
 
-    send_udp_packet(ipv4->dstAddr, ipv4->srcAddr, udp->dstPort, udp->srcPort);
+    char key[] = "hello";
+    char val[] = "beautiful world";
 
+    char key_len[] = "5";
+    char val_len[] = "15";
+	/* We write to packet data here and copy it into the ctm buffer */
+	__lmem struct packet_tx_eth_ip_udp Pdata;
+    // Revert eth, srcAddr and Port
+    create_udp_packet(&Pdata, (uint8_t *) eth + ETH_BYTES, ((uint8_t *)eth),
+        ipv4->dstAddr, ipv4->srcAddr,
+        udp->dstPort, udp->srcPort
+    );
 
+    // TODO: Use strlen here?
+	create_set_req(&Pdata, (char *)&key, (char *)&key_len, (char *)&val, (char *)&val_len);
+	send_packet(&(Pdata.__raw), sizeof(struct packet_tx_eth_ip_udp));
     return PIF_PLUGIN_RETURN_FORWARD;
 }
 
@@ -303,14 +386,20 @@ int pif_plugin_serve_request(EXTRACTED_HEADERS_T *headers,
     PIF_PLUGIN_ipv4_T *ipv4 = pif_plugin_hdr_get_ipv4(headers);
     PIF_PLUGIN_udp_T *udp = pif_plugin_hdr_get_udp(headers);
     PIF_PLUGIN_pload_T *pload = pif_plugin_hdr_get_pload(headers);
-    //uint8_t *ptr = (void *) pload;
-    //p_len = udp->length_ - UDP_HDR_LEN;
+    
+    uint32_t job_id = pload->id;
+    if (job_id == 0) {
+        //uint8_t *ptr = (void *) pload;
+        //p_len = udp->length_ - UDP_HDR_LEN;
 
-    //uint8_t tmp[16];
-    //uint32_t p_len;
+        //uint8_t tmp[16];
+        //uint32_t p_len;
 
-    //pload->__p_1 = pload->__p_0;
-    pload->__p_0 = 1751726624;
+        //pload->__p_1 = pload->__p_0;
+        pload->__p_0 = 1751726624;
+    } else if (job_id == 1) {
+        return send_cache_set_pkt(headers, match_data);
+    }
     
     // Copy the payload into temp mem.
     //memcpy_mem_mem(&tmp, ptr, p_len);
