@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <memory.h>
 #include <nfp/me.h>
 #include <nfp/cls.h>
 #include <nfp/mem_atomic.h>
