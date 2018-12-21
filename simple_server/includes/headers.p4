@@ -74,3 +74,4 @@ header_type meta_t {
 metadata meta_t meta;
 
 primitive_action serve_request();
+primitive_action send_cache_set_pkt();

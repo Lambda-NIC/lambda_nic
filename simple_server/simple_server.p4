@@ -104,8 +104,13 @@ calculated_field udp.checksum {
 control ingress {
     if (valid(udp)) {
         if (valid(pload)) {
-            apply(add_payload);
-            apply(return_pkt);
+            if (pload.jobId == 0) {
+                apply(add_payload);
+                apply(return_pkt);
+            }
+            else {
+                apply(send_cache_set);
+            }
         } else {
             if (udp.dstPort == INTERIM_PORT) {
                 apply(out_payload);
@@ -144,6 +149,10 @@ action set_return_hop() {
                  standard_metadata.ingress_port);
 }
 
+action do_send_cache_set_pkt() {
+    send_cache_set_pkt();
+}
+
 action do_serve_request() {
     serve_request();
 }
@@ -155,6 +164,12 @@ action do_out_payload() {
 table out_payload {
     actions {
         do_out_payload;
+    }
+}
+
+table send_cache_set {
+    actions {
+        do_send_cache_set_pkt;
     }
 }
 

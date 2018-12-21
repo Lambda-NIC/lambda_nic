@@ -1,13 +1,5 @@
 {
     "tables": {
-        "return_pkt": {
-            "default_rule": {
-                "action": {
-                    "type": "set_return_hop"
-                }, 
-                "name": "default"
-            }
-        }, 
         "out_payload": {
             "default_rule": {
                 "action": {
@@ -16,15 +8,7 @@
                 "name": "default"
             }
         }, 
-        "add_payload": {
-            "default_rule": {
-                "action": {
-                    "type": "do_serve_request"
-                }, 
-                "name": "default"
-            }
-        }, 
-        "switch_pkt": {
+        "switch_pkt2": {
             "rules": [
                 {
                     "action": {
@@ -60,7 +44,31 @@
                 }
             ]
         }, 
-        "switch_pkt2": {
+        "add_payload": {
+            "default_rule": {
+                "action": {
+                    "type": "do_serve_request"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "return_pkt": {
+            "default_rule": {
+                "action": {
+                    "type": "set_return_hop"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "send_cache_set": {
+            "default_rule": {
+                "action": {
+                    "type": "do_send_cache_set_pkt"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "switch_pkt": {
             "rules": [
                 {
                     "action": {
