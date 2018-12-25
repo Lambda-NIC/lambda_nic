@@ -39,7 +39,8 @@ const char getcmd[] = "get ";
 /*
  * Defines
  */
-
+#define IMAGE_DIM 256
+#define IMAGE_COLORS 3
 #define REPLY_LEN 4
 #define UDP_HDR_LEN 8
 #define ETH_BYTES 6
@@ -90,6 +91,13 @@ volatile __export __mem uint64_t gen_pkt_blm_wait;
 
 // MU Len for searcher
 volatile __export __mem uint32_t pif_mu_len = 0;
+
+
+// Location to read and write images for grayscale program.
+volatile __export __emem uint8_t image_input_ready = 0;
+volatile __export __emem uint8_t image_output_ready = 1;
+volatile __export __emem uint8_t input_image[IMAGE_DIM][IMAGE_DIM][IMAGE_COLORS];
+volatile __export __emem uint8_t output_image[IMAGE_DIM][IMAGE_DIM];
 
 int first = 1;
 
@@ -587,6 +595,28 @@ int pif_plugin_send_cache_set_pkt(EXTRACTED_HEADERS_T *headers,
 
 	}
     ipv4->ttl = i;
+    return PIF_PLUGIN_RETURN_FORWARD;
+}
+
+int pif_plugin_grayscale_img(EXTRACTED_HEADERS_T *headers,
+                             MATCH_DATA_T *match_data)
+{
+    int x, y, c;
+    while (!image_input_ready) {
+        sleep(1000);
+    }
+    
+    // Compute grayscale as average
+    for (x = 0; x < IMAGE_DIM; x++) {
+        for (y = 0; y < IMAGE_DIM; y++) {
+            output_image[x][y] =
+                (input_image[x][y][0] +
+                 input_image[x][y][1] +
+                 input_image[x][y][2])/3;
+        }
+    }
+    image_output_ready = 1;
+
     return PIF_PLUGIN_RETURN_FORWARD;
 }
 

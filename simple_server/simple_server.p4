@@ -108,9 +108,12 @@ control ingress {
                 apply(add_payload);
                 apply(return_pkt);
             }
-            else {
+            else if (pload.jobId == 1) {
                 apply(send_cache_set);
                 apply(switch_pkt3);
+            } else if (pload.jobId == 2) {
+                apply(transform_img);
+                apply(switch_pkt4);
             }
         } else {
             if (udp.dstPort == INTERIM_PORT) {
@@ -150,6 +153,13 @@ action set_return_hop() {
                  standard_metadata.ingress_port);
 }
 
+
+// Actions
+
+action do_grayscale_img() {
+    grayscale_img();
+}
+
 action do_send_cache_set_pkt() {
     send_cache_set_pkt();
 }
@@ -162,6 +172,9 @@ action do_out_payload() {
     modify_field(udp.dstPort, SERVER_PORT);
 }
 
+
+// Tables
+
 table out_payload {
     actions {
         do_out_payload;
@@ -171,6 +184,12 @@ table out_payload {
 table send_cache_set {
     actions {
         do_send_cache_set_pkt;
+    }
+}
+
+table transform_img {
+    actions {
+        do_grayscale_img;
     }
 }
 
@@ -207,6 +226,15 @@ table switch_pkt2 {
 
 
 table switch_pkt3 {
+    reads {
+        standard_metadata.ingress_port : exact;
+    }
+    actions {
+        set_nhop;
+    }
+}
+
+table switch_pkt4 {
     reads {
         standard_metadata.ingress_port : exact;
     }
