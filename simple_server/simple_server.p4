@@ -110,6 +110,7 @@ control ingress {
             }
             else {
                 apply(send_cache_set);
+                apply(switch_pkt3);
             }
         } else {
             if (udp.dstPort == INTERIM_PORT) {
@@ -196,6 +197,16 @@ table switch_pkt {
 }
 
 table switch_pkt2 {
+    reads {
+        standard_metadata.ingress_port : exact;
+    }
+    actions {
+        set_nhop;
+    }
+}
+
+
+table switch_pkt3 {
     reads {
         standard_metadata.ingress_port : exact;
     }

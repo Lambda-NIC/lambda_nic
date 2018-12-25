@@ -43,6 +43,8 @@ const char getcmd[] = "get ";
 #define REPLY_LEN 4
 #define UDP_HDR_LEN 8
 #define ETH_BYTES 6
+
+//#define MAC_CHAN_PER_PORT   8
 #define MAC_CHAN_PER_PORT   4
 #define TMQ_PER_PORT        (MAC_CHAN_PER_PORT * 8)
 #define MAC_TO_PORT(x)      (x / MAC_CHAN_PER_PORT)
@@ -54,6 +56,10 @@ const char getcmd[] = "get ";
 #define UDP_PROTO    17
 #define DEFAULT_TTL  64
 #define REG_CHUNK    32
+
+#ifndef NBI
+#define NBI 0
+#endif
 
 
 
@@ -73,11 +79,16 @@ const char getcmd[] = "get ";
  */
 
 /* credits for CTM */
-__import __shared __cls struct ctm_pkt_credits ctm_credits;
+//__import __shared __cls struct ctm_pkt_credits ctm_credits;
+
+__import  __cls struct ctm_pkt_credits ctm_credits;
+
 
 /* counters for out of credit situations */
 volatile __export __mem uint64_t gen_pkt_ctm_wait;
 volatile __export __mem uint64_t gen_pkt_blm_wait;
+
+// MU Len for searcher
 volatile __export __mem uint32_t pif_mu_len = 0;
 
 int first = 1;
@@ -429,17 +440,20 @@ struct packet_tx_eth_ip {
 };
 
 
-
 static void build_tx_ip(__lmem struct packet_tx_eth_ip *Pdata)
 {
-    uint8_t i;
-
     reg_zero(Pdata->__raw, sizeof(struct packet_tx_eth_ip));
 
     Pdata->eth_dst_hi  = 0xB026;
-    Pdata->eth_dst_lo  = 0x281A7560  | ctx();
+    Pdata->eth_dst_lo  = 0x281A7560;
     Pdata->eth_src_hi  = 0x00154D00;
     Pdata->eth_src_lo  = 0x1101;
+
+    //Pdata->eth_dst_hi  = 0x0015;
+    //Pdata->eth_dst_lo  = 0x4D001101;
+    //Pdata->eth_src_hi  = 0xB026281A;
+    //Pdata->eth_src_lo  = 0x7560;
+
     Pdata->eth_type = NET_ETH_TYPE_IPV4;
 
     Pdata->ip.ver = 4;
@@ -449,13 +463,16 @@ static void build_tx_ip(__lmem struct packet_tx_eth_ip *Pdata)
                     sizeof(Pdata->tcp) +
                     sizeof(Pdata->tcp_data);
     Pdata->ip.frag = 0;
-    Pdata->ip.ttl = 64;
-    Pdata->ip.proto = 6;
+    Pdata->ip.ttl = DEFAULT_TTL;
+    Pdata->ip.proto = TCP_PROTO;
     Pdata->ip.sum = 0;  // Let MAC take care of this
-    Pdata->ip.src = 0x14141665;
+    Pdata->ip.src = 0x14141565;
     Pdata->ip.dst = 0x1E1E1E69;
 
-    Pdata->tcp.sport = 12345;
+    //Pdata->ip.src = 0x1E1E1E69;
+    //Pdata->ip.dst = 0x14141565;
+
+    Pdata->tcp.sport = 2222;
     Pdata->tcp.dport = 2222;
     Pdata->tcp.seq = 0x11223344;
     Pdata->tcp.ack = 0x55667788;
@@ -469,7 +486,6 @@ static void build_tx_ip(__lmem struct packet_tx_eth_ip *Pdata)
 /*
  * Packet metadata operations
  */
-
 static void build_tx_meta(__lmem struct nbi_meta_catamaran *nbi_meta)
 {
     __xread blm_buf_handle_t buf;
@@ -478,21 +494,17 @@ static void build_tx_meta(__lmem struct nbi_meta_catamaran *nbi_meta)
 
     reg_zero(nbi_meta->__raw, sizeof(struct nbi_meta_catamaran));
 
-    /*
-     * Poll for a CTM buffer until one is returned
-     */
+    // Poll for CTM Buffer
     while (1) {
         pkt_num = pkt_ctm_alloc(&ctm_credits, __ISLAND, PKT_CTM_SIZE_256, 1, 1);
         if (pkt_num != CTM_ALLOC_ERR)
             break;
-        sleep(1000);
+        sleep(BACKOFF_SLEEP);
         mem_incr64((__mem void *) gen_pkt_ctm_wait);
     }
-    /*
-     * Poll for MU buffer until one is returned.
-     */
+    // Poll for MU buffer
     while (blm_buf_alloc(&buf, blq) != 0) {
-        sleep(1000);
+        sleep(BACKOFF_SLEEP);
         mem_incr64((__mem void *) gen_pkt_blm_wait);
     }
 
@@ -500,8 +512,6 @@ static void build_tx_meta(__lmem struct nbi_meta_catamaran *nbi_meta)
     nbi_meta->pkt_info.pnum = pkt_num;
     nbi_meta->pkt_info.bls = blq;
     nbi_meta->pkt_info.muptr = buf;
-
-    /* all other fields in the nbi_meta struct are left zero */
 }
 
 
@@ -510,13 +520,10 @@ static void build_tx_meta(__lmem struct nbi_meta_catamaran *nbi_meta)
 int pif_plugin_send_cache_set_pkt(EXTRACTED_HEADERS_T *headers,
                                   MATCH_DATA_T *match_data)
 {
-    // Get the payload
-    //PIF_PLUGIN_eth_T *eth = pif_plugin_hdr_get_eth(headers);
-    //PIF_PLUGIN_ipv4_T *ipv4 = pif_plugin_hdr_get_ipv4(headers);
+
+    PIF_PLUGIN_ipv4_T *ipv4 = pif_plugin_hdr_get_ipv4(headers);
     //PIF_PLUGIN_udp_T *udp = pif_plugin_hdr_get_udp(headers);
     //PIF_PLUGIN_pload_T *pload = pif_plugin_hdr_get_pload(headers);
-
-
 
     // packet metadata, always goes at start of ctm buffer
     __lmem struct nbi_meta_catamaran mdata;
@@ -529,15 +536,21 @@ int pif_plugin_send_cache_set_pkt(EXTRACTED_HEADERS_T *headers,
     // point to packet data in CTM
     __mem char *pbuf;
 
-    int pkt_offset = PKT_NBI_OFFSET + MAC_EGRESS_PREPEND_SIZE;
-    int pkt_len = sizeof(struct packet_tx_eth_ip);
-    int meta_len = sizeof(struct nbi_meta_catamaran);
-    uint64_t start_timestamp;
+
     int i, j;
-    uint32_t nbi = 0;
-    uint32_t out_port = 1; /* 0 or 1 for port 0, 1 */
- 
-	for (i = 1; i <= 10; i++) {
+
+    int pkt_len = sizeof(struct packet_tx_eth_ip);
+
+    int meta_len = sizeof(struct nbi_meta_catamaran);
+
+    //uint32_t out_port = 0; /* 0 or 1 for port 0, 1 */
+    __gpr int out_port = 0;
+
+    /* tell the mac to patch in the L3 and L4 checksums */
+    __gpr int pkt_off = PKT_NBI_OFFSET; // + MAC_PREPEND_BYTES;
+
+	for (i = 1; i <= 60; i++) {
+
         /* Allocate packet and write out packet metadata to packet buffer */
 		build_tx_meta(&mdata);
 		reg_cp((void*)xwr, (void*)&mdata, meta_len);
@@ -553,22 +566,27 @@ int pif_plugin_send_cache_set_pkt(EXTRACTED_HEADERS_T *headers,
 
         /* copy and write out the packet data into the packet buffer */
 		reg_cp((void*)xwr, (void*)pdata.__raw, pkt_len);
-		mem_write32(xwr, pbuf + pkt_offset, pkt_len);
+		mem_write32(xwr, pbuf + pkt_off, pkt_len);
 
-        /* tell the mac to patch in the L3 and L4 checksums */
-		pkt_mac_egress_cmd_write(pbuf,
-                                 PKT_NBI_OFFSET + MAC_EGRESS_PREPEND_SIZE,
-                                 1, 1);
+
+		pkt_mac_egress_cmd_write(pbuf, pkt_off, 1, 1);
 
         /* set up the packet modifier to trim bytes for alignment */
-		msi = pkt_msd_write(pbuf, PKT_NBI_OFFSET);
+		msi = pkt_msd_write(pbuf, pkt_off);
+
         /* send the packet */
-		pkt_nbi_send(mdata.pkt_info.isl, mdata.pkt_info.pnum, &msi,
+		pkt_nbi_send(mdata.pkt_info.isl,
+                     mdata.pkt_info.pnum,
+                     &msi,
 					 pkt_len + MAC_EGRESS_PREPEND_SIZE,
-					 nbi, PORT_TO_TMQ(out_port),
-					 mdata.seqr, mdata.seq, PKT_CTM_SIZE_256);
+					 NBI,
+                     PORT_TO_TMQ(out_port),
+					 mdata.seqr,
+                     mdata.seq,
+                     PKT_CTM_SIZE_256);
 
 	}
+    ipv4->ttl = i;
     return PIF_PLUGIN_RETURN_FORWARD;
 }
 
