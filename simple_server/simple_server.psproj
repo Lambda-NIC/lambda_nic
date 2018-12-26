@@ -1165,13 +1165,13 @@
                 "clock_freq_config": {
                     "ILK0SERDESCLK": 10.3125, 
                     "ILK1SERDESCLK": 10.3125, 
-                    "fD0_CLK": 533.33, 
+                    "fD0_CLK": 800.0, 
                     "fD1_CLK": 533.33, 
                     "fD2_CLK": 533.33, 
                     "fILA0_CLK": 800.0, 
                     "fILA1_CLK": 800.0, 
-                    "fP_CLK": 1000.0, 
-                    "fT_CLK": 1200.0
+                    "fP_CLK": 600.0, 
+                    "fT_CLK": 600.0
                 }, 
                 "memory_config": {
                     "i24": {

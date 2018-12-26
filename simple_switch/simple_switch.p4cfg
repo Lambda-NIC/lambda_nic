@@ -14,7 +14,7 @@
                     "name": "ingress", 
                     "match": {
                         "standard_metadata.ingress_port": {
-                            "value": "p1"
+                            "value": "p0"
                         }
                     }
                 }, 
@@ -22,7 +22,7 @@
                     "action": {
                         "data": {
                             "port": {
-                                "value": "p1"
+                                "value": "p0"
                             }
                         }, 
                         "type": "set_nhop"

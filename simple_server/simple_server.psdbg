@@ -8,8 +8,8 @@
         }, 
         "#Version": "61.02", 
         "BreakpointSortOptions": {
-            "FilterByIndex": 0, 
-            "SecFilterIndex": 0, 
+            "FilterByIndex": -1, 
+            "SecFilterIndex": -1, 
             "ShowCodeBreakpoints": false, 
             "ShowDataBreakpoints": false, 
             "ShowMemoryBreakpoints": false
@@ -28,7 +28,6 @@
                     "ptn_Child2=Document-1", 
                     "ptn_Child3=Document-2", 
                     "ptn_Child4=Document-3", 
-                    "ptn_Child5=Document-4", 
                     "[WorkState_v1_2.Frames.ChildFrames.Document-0]", 
                     "ptn_Child1=ViewFrame-0", 
                     "[WorkState_v1_2.Frames.ChildFrames.Document-0.ViewFrame-0]", 
@@ -59,15 +58,6 @@
                     "[WorkState_v1_2.Frames.ChildFrames.Document-3]", 
                     "ptn_Child1=ViewFrame-0", 
                     "[WorkState_v1_2.Frames.ChildFrames.Document-3.ViewFrame-0]", 
-                    "DocPathName=Z:\\lambda_nic\\simple_server\\simple_server.p4cfg", 
-                    "DocumentString=P4USRCFG", 
-                    "DocTemplateIndex=0", 
-                    "WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPBOPPPPPPIGAAAAAAIGAAAAAAEECAAAAAKOEAAAAA", 
-                    "IsActiveChildFrame=False", 
-                    "IsFrameVisible=True", 
-                    "[WorkState_v1_2.Frames.ChildFrames.Document-4]", 
-                    "ptn_Child1=ViewFrame-0", 
-                    "[WorkState_v1_2.Frames.ChildFrames.Document-4.ViewFrame-0]", 
                     "DocPathName=Z:\\lambda_nic\\simple_server\\plugin.c", 
                     "DocumentString=P4SANDBOXCSRC", 
                     "DocTemplateIndex=0", 
@@ -86,7 +76,7 @@
                     "ptn_Child1=ThreadWindow0", 
                     "[WorkState_v1_2.ThreadWindows.ThreadWindow0]", 
                     "ThreadName=Thread0///AgilioCX", 
-                    "Placement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPBOPPPPPPENBAAAAAENBAAAAADMEAAAAAFLFAAAAA", 
+                    "Placement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPBOPPPPPPOOBAAAAAOOBAAAAANNEAAAAAPMFAAAAA", 
                     "TrackActiveThread=False", 
                     "ShowListView=False"
                 ], 
@@ -452,7 +442,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i1.me1": {
                             "MicroEngineContexts": {
@@ -505,7 +500,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i1.me2": {
                             "MicroEngineContexts": {
@@ -558,7 +558,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i1.me3": {
                             "MicroEngineContexts": {
@@ -611,7 +616,12 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {}
+                            "MicroEngineSliceHistory": {
+                                "": {
+                                    "DisplayCollapsed": true, 
+                                    "HistoryLabels": []
+                                }
+                            }
                         }, 
                         "i32.me0": {
                             "MicroEngineContexts": {

@@ -1509,7 +1509,7 @@
             }
         }, 
         "project_name": "simple_switch", 
-        "project_path": "Z:\\Users\\schoi\\Desktop\\SmartNICs\\simple_switch\\simple_switch.psproj", 
+        "project_path": "Z:\\lambda_nic\\simple_switch\\simple_switch.psproj", 
         "sim_startup_options": {
             "imported_var_data_file": "", 
             "sim_profile_started": true, 
