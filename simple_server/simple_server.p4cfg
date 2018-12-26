@@ -8,6 +8,42 @@
                 "name": "default"
             }
         }, 
+        "switch_pkt4": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "v0.1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "ingress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "p0"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "p0"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "egress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "v0.1"
+                        }
+                    }
+                }
+            ]
+        }, 
         "switch_pkt3": {
             "rules": [
                 {
@@ -100,6 +136,14 @@
             "default_rule": {
                 "action": {
                     "type": "do_send_cache_set_pkt"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "transform_img": {
+            "default_rule": {
+                "action": {
+                    "type": "do_grayscale_img"
                 }, 
                 "name": "default"
             }

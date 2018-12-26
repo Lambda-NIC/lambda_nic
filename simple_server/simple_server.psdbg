@@ -8,8 +8,8 @@
         }, 
         "#Version": "61.02", 
         "BreakpointSortOptions": {
-            "FilterByIndex": -1, 
-            "SecFilterIndex": -1, 
+            "FilterByIndex": 0, 
+            "SecFilterIndex": 0, 
             "ShowCodeBreakpoints": false, 
             "ShowDataBreakpoints": false, 
             "ShowMemoryBreakpoints": false
@@ -442,12 +442,7 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {
-                                "": {
-                                    "DisplayCollapsed": true, 
-                                    "HistoryLabels": []
-                                }
-                            }
+                            "MicroEngineSliceHistory": {}
                         }, 
                         "i1.me1": {
                             "MicroEngineContexts": {
@@ -500,12 +495,7 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {
-                                "": {
-                                    "DisplayCollapsed": true, 
-                                    "HistoryLabels": []
-                                }
-                            }
+                            "MicroEngineSliceHistory": {}
                         }, 
                         "i1.me2": {
                             "MicroEngineContexts": {
@@ -558,12 +548,7 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {
-                                "": {
-                                    "DisplayCollapsed": true, 
-                                    "HistoryLabels": []
-                                }
-                            }
+                            "MicroEngineSliceHistory": {}
                         }, 
                         "i1.me3": {
                             "MicroEngineContexts": {
@@ -616,12 +601,7 @@
                                     "ReferencesDisplayed": true
                                 }
                             }, 
-                            "MicroEngineSliceHistory": {
-                                "": {
-                                    "DisplayCollapsed": true, 
-                                    "HistoryLabels": []
-                                }
-                            }
+                            "MicroEngineSliceHistory": {}
                         }, 
                         "i32.me0": {
                             "MicroEngineContexts": {
