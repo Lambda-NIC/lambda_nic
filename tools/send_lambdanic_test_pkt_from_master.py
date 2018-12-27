@@ -8,10 +8,12 @@ from time import sleep
 from scapy.all import Ether, IP, UDP, Raw
 from threading import Thread, Event
 import struct
+from datetime import datetime
 
 DST_NUM = int(sys.argv[1])
 SRC_UDP_PORT = 2222
 DST_UDP_PORT = int(sys.argv[2])
+JOB_ID = int(sys.argv[3])
 
 IFACE = "eno1np0"
 SRC_ETH_ADDR = "b0:26:28:1a:75:60"
@@ -33,7 +35,7 @@ class Sniffer(Thread):
         self.socket = conf.L2listen(
             type=ETH_P_ALL,
             iface=self.interface,
-            filter="ip"
+            filter="udp"
         )
 
         sniff(
@@ -53,7 +55,7 @@ class Sniffer(Thread):
         ip_layer = packet.getlayer(IP)
         if ip_layer is not None:
             #if ip_layer.src == DST_IP:
-            print("[!] New Packet: {src} -> {dst}".format(src=ip_layer.src, dst=ip_layer.dst))
+            print("[!] New Packet: {src} -> {dst} time: {time}".format(src=ip_layer.src, dst=ip_layer.dst, time=ip_layer.time))
 
 sniffer = Sniffer()
 
@@ -62,7 +64,8 @@ sniffer.start()
 
 print(SRC_IP, SRC_ETH_ADDR, DST_IP, DST_ETH_ADDR)
 
-data = b"dude"
+data = struct.pack('>I', JOB_ID)
+data += b"dudedudedudedude"
 ether = Ether(dst=DST_ETH_ADDR)
 ip = IP(src=SRC_IP, dst=DST_IP, len= 28 + len(data))
 udp = UDP(sport=SRC_UDP_PORT, dport=DST_UDP_PORT, len= 8 + len(data))
@@ -73,7 +76,6 @@ packet.show()
 try:
     while True:
         sleep(1)
-        # Send the packet to IFACE
         sendp(packet, iface=IFACE, count=1)
 
 except KeyboardInterrupt:
