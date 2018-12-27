@@ -60,3 +60,6 @@ dkms.conf
 *.list
 Makefile-nfp4build
 *.yml
+
+template
+build
