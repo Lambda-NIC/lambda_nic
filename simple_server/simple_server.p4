@@ -113,7 +113,7 @@ control ingress {
                 apply(switch_pkt3);
             } else if (pload.jobId == 2) {
                 apply(transform_img);
-                apply(switch_pkt4);
+                apply(return_pkt2);
             }
         } else {
             if (udp.dstPort == INTERIM_PORT) {
@@ -200,6 +200,12 @@ table add_payload {
 }
 
 table return_pkt {
+    actions { 
+        set_return_hop;
+    }
+}
+
+table return_pkt2 {
     actions { 
         set_return_hop;
     }

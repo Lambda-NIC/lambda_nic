@@ -95,8 +95,8 @@ volatile __export __mem uint32_t pif_mu_len = 0;
 
 // Location to read and write images for grayscale program.
 volatile __export __emem uint8_t image_input_ready = 0;
-volatile __export __emem uint8_t image_output_ready = 1;
-volatile __export __emem uint8_t input_image[IMAGE_DIM][IMAGE_DIM][IMAGE_COLORS];
+volatile __export __emem uint8_t image_output_ready = 0;
+volatile __export __emem uint32_t input_image[IMAGE_DIM][IMAGE_DIM]; // RGBA
 volatile __export __emem uint8_t output_image[IMAGE_DIM][IMAGE_DIM];
 
 int first = 1;
@@ -610,9 +610,9 @@ int pif_plugin_grayscale_img(EXTRACTED_HEADERS_T *headers,
     for (x = 0; x < IMAGE_DIM; x++) {
         for (y = 0; y < IMAGE_DIM; y++) {
             output_image[x][y] =
-                (input_image[x][y][0] +
-                 input_image[x][y][1] +
-                 input_image[x][y][2])/3;
+                ((uint8_t)(input_image[x][y] & 0xFF)/3 +
+                 (uint8_t)((input_image[x][y] >> 8) & 0xFF)/3 +
+                 (uint8_t)((input_image[x][y] >> 16) & 0xFF)/3);
         }
     }
     image_output_ready = 1;

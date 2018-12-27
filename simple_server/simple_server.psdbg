@@ -8,8 +8,8 @@
         }, 
         "#Version": "61.02", 
         "BreakpointSortOptions": {
-            "FilterByIndex": 0, 
-            "SecFilterIndex": 0, 
+            "FilterByIndex": -1, 
+            "SecFilterIndex": -1, 
             "ShowCodeBreakpoints": false, 
             "ShowDataBreakpoints": false, 
             "ShowMemoryBreakpoints": false
@@ -76,14 +76,55 @@
                     "ptn_Child1=ThreadWindow0", 
                     "[WorkState_v1_2.ThreadWindows.ThreadWindow0]", 
                     "ThreadName=Thread0///AgilioCX", 
-                    "Placement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPBOPPPPPPOOBAAAAAOOBAAAAANNEAAAAAPMFAAAAA", 
+                    "Placement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPBOPPPPPPEABAAAAAEABAAAAAHCEAAAAAKIEAAAAA", 
                     "TrackActiveThread=False", 
                     "ShowListView=False"
                 ], 
                 "Type": 5
             }
         }, 
-        "DataWatches": {}, 
+        "DataWatches": {
+            "2147483679": {
+                "Breakpoints": {}, 
+                "ExpandedWatchItem": false, 
+                "InlinedLine": -1, 
+                "InliningSrcFilePath": "", 
+                "MicroContext": {
+                    "ChipName": "AgilioCX", 
+                    "ContextNumber": 0, 
+                    "MicroEngineNumber": "i32.me0"
+                }, 
+                "SourceFileInfo": {
+                    "ColumnNumber": 0, 
+                    "FilePath": ".\\simple_server.p4", 
+                    "FunctionInstanceId": 91, 
+                    "LineNumber": 162
+                }, 
+                "TypeVariable": true, 
+                "WatchName": "image_input_ready", 
+                "WatchPC": 0
+            }, 
+            "2147483681": {
+                "Breakpoints": {}, 
+                "ExpandedWatchItem": false, 
+                "InlinedLine": -1, 
+                "InliningSrcFilePath": "", 
+                "MicroContext": {
+                    "ChipName": "AgilioCX", 
+                    "ContextNumber": 0, 
+                    "MicroEngineNumber": "i32.me0"
+                }, 
+                "SourceFileInfo": {
+                    "ColumnNumber": 0, 
+                    "FilePath": ".\\simple_server.p4", 
+                    "FunctionInstanceId": 91, 
+                    "LineNumber": 162
+                }, 
+                "TypeVariable": true, 
+                "WatchName": "image_output_ready", 
+                "WatchPC": 0
+            }
+        }, 
         "ForeignModelOptions": {}, 
         "HardwareConfiguration": {
             "AgilioCX": {
@@ -4590,8 +4631,8 @@
         }, 
         "UniqueIDs": {
             "NextUniqueBreakpointGroupId": "0x80000000", 
-            "NextUniqueBreakpointId": "0x8000034e", 
-            "NextUniqueWatchId": "0x8000001f"
+            "NextUniqueBreakpointId": "0x80000351", 
+            "NextUniqueWatchId": "0x80000022"
         }, 
         "WatchScriptsExeData": {}
     }
