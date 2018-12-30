@@ -8,11 +8,10 @@ ifup $1
 /sbin/ethtool --coalesce $1 tx-frames 1
 
 # Adding route
-ip route del 20.20.0.0/16
-ip route del 20.20.20.0/24
-ip route del 30.30.30.0/24
-ip route del 30.30.30.105/32
-ip route add 30.30.30.105/32 dev $1
-ip route add 20.20.0.0/16 dev $1
+ip route del 10.10.0.0/16
+ip route del 10.10.20.0/24
+ip route del 10.10.20.105/32
+ip route add 10.10.20.105/32 dev $1
+ip route add 10.10.0.0/16 dev $1
 
 ethtool -K $1 tx off rx off
