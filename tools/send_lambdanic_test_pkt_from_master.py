@@ -18,8 +18,8 @@ JOB_ID = int(sys.argv[3])
 IFACE = "eno1np0"
 SRC_ETH_ADDR = "b0:26:28:1a:75:60"
 DST_ETH_ADDR = "00:15:4d:00:%d%d:01" % (DST_NUM, DST_NUM)
-SRC_IP = "30.30.30.105"
-DST_IP = "20.20.2%d.101" % DST_NUM
+SRC_IP = "10.10.20.105"
+DST_IP = "10.10.10%d.101" % DST_NUM
 
 class Sniffer(Thread):
     def  __init__(self, interface=IFACE):
