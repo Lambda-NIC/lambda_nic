@@ -8,6 +8,78 @@
                 "name": "default"
             }
         }, 
+        "switch_pkt5": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "v0.1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "ingress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "p0"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "p0"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "egress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "v0.1"
+                        }
+                    }
+                }
+            ]
+        }, 
+        "switch_pkt4": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "v0.1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "ingress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "p0"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "p0"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "egress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "v0.1"
+                        }
+                    }
+                }
+            ]
+        }, 
         "switch_pkt3": {
             "rules": [
                 {
@@ -88,6 +160,14 @@
                 "name": "default"
             }
         }, 
+        "mark_cache_get": {
+            "default_rule": {
+                "action": {
+                    "type": "do_mark_cache_get_pkt"
+                }, 
+                "name": "default"
+            }
+        }, 
         "mark_cache_set": {
             "default_rule": {
                 "action": {
@@ -100,6 +180,14 @@
             "default_rule": {
                 "action": {
                     "type": "set_return_hop"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "send_cache_get": {
+            "default_rule": {
+                "action": {
+                    "type": "do_send_cache_get_pkt"
                 }, 
                 "name": "default"
             }

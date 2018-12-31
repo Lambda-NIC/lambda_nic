@@ -1,4 +1,3 @@
-
 header_type ethernet_t {
     fields {
         dstAddr : 48;
@@ -71,6 +70,7 @@ header_type meta_t {
     }
 }
 
+/*
 header_type memcached_binary_t {
 	fields {
 		magic : 8;
@@ -87,6 +87,15 @@ header_type memcached_binary_t {
 }
 
 header memcached_binary_t memcached;
+*/
+
+header_type memcached_ascii_t {
+	fields {
+        data: 256;
+    }
+}
+
+header memcached_ascii_t memcached;
 
 header_type i2e_metadata_t {
     fields {
@@ -106,4 +115,5 @@ metadata meta_t meta;
 
 primitive_action serve_request();
 primitive_action send_cache_set_pkt();
+primitive_action send_cache_get_pkt();
 primitive_action grayscale_img();

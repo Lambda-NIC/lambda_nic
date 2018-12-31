@@ -12,8 +12,10 @@
 
 #define SERVER_PORT 0x1111
 #define INTERIM_PORT 0x2222
-#define CLONE_PORT 0x3333
-#define MEMCACHED_PORT 11211
+#define CLONE_GET_PORT 0x3333
+#define CLONE_SET_PORT 0x4444
+#define MEMCACHED_PORT 0x2BCB 
+#define DUMMY_PORT 0x0000 
 
 parser start {
     return parse_eth;
@@ -46,7 +48,7 @@ parser parse_udp {
     set_metadata(meta.tmpUdpPort, udp.dstPort);
     return  select(udp.dstPort) {
         SERVER_PORT : parse_payload;
-        MEMCACHED_PORT: parse_memcached;
+        DUMMY_PORT: parse_memcached;
         default : ingress;
     }
 }

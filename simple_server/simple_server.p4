@@ -1,7 +1,6 @@
 #include "includes/headers.p4"
 #include "includes/parser.p4"
 
-
 //Checksum
 
 //IPv4 Checksum
@@ -103,24 +102,31 @@ calculated_field udp.checksum {
 
 control ingress {
     if (valid(udp)) {
-        if (valid(pload)) {
-            if (pload.jobId == 0) {
-                apply(add_payload);
-                apply(return_pkt);
-            } else if (pload.jobId == 1) {
-                apply(mark_cache_set);
-                //apply(switch_pkt3);
-            } else if (pload.jobId == 2) {
-                apply(transform_img);
-                apply(return_pkt2);
+        if (udp.dstPort == SERVER_PORT) {
+            if (valid(pload)) {
+                if (pload.jobId == 0) {
+                    apply(add_payload);
+                    apply(return_pkt);
+                } else if (pload.jobId == 1) {
+                    apply(transform_img);
+                    apply(return_pkt2);
+                } else if (pload.jobId == 2) {
+                    apply(mark_cache_get);
+                    apply(switch_pkt3);
+                } else if (pload.jobId == 3) {
+                    apply(mark_cache_set);
+                    apply(switch_pkt4);
+                }
             }
+        } else if (udp.dstPort == INTERIM_PORT) {
+            apply(out_payload);
+            apply(switch_pkt2);
+        } else if (udp.dstPort == CLONE_GET_PORT) {
+            apply(send_cache_get);
+        } else if (udp.dstPort == CLONE_SET_PORT) {
+            apply(send_cache_set);
         } else {
-            if (udp.dstPort == INTERIM_PORT) {
-                apply(out_payload);
-                apply(switch_pkt2);
-            } else if (udp.dstPort == CLONE_PORT) {
-                apply(send_cache_set);
-            }
+            apply(switch_pkt5);
         }
     } else {
         apply(switch_pkt);
@@ -165,7 +171,7 @@ action do_grayscale_img() {
 // Marking the incoming packets as cache and clone it at egress.
 action do_mark_cache_set_pkt() {
     // Change UDP Port
-    modify_field(udp.dstPort, CLONE_PORT);
+    modify_field(udp.dstPort, CLONE_SET_PORT);
     remove_header(pload);
 }
 
@@ -174,7 +180,45 @@ action do_send_cache_set_pkt() {
     add_header(memcached);
 
     send_cache_set_pkt();
+    modify_field(ipv4.totalLen, 57);
+    modify_field(udp.length_, 37);
     
+    // Swap Eth Addr to return the request back to host.
+    modify_field(eth.dstAddr, eth.srcAddr);
+    modify_field(eth.srcAddr, meta.tmpEthAddr);
+
+    // Swap IP Addr
+    modify_field(ipv4.dstAddr, ipv4.srcAddr);
+    modify_field(ipv4.srcAddr, meta.tmpIpAddr);
+
+    // Swap UDP Port
+    modify_field(udp.dstPort, MEMCACHED_PORT);
+    modify_field(udp.srcPort, MEMCACHED_PORT);
+
+    // Remove UDP
+    modify_field(udp.checksum, 0);
+
+    // Swap egress Port
+    modify_field(standard_metadata.egress_spec,
+                 standard_metadata.ingress_port);
+}
+
+// Marking the incoming packets as cache and clone it at egress.
+action do_mark_cache_get_pkt() {
+    // Change UDP Port
+    modify_field(udp.dstPort, CLONE_GET_PORT);
+    remove_header(pload);
+}
+
+// Reroute cloned packets to send cache information.
+action do_send_cache_get_pkt() {
+    add_header(memcached);
+
+    send_cache_get_pkt();
+
+    modify_field(udp.length_, 25);
+    modify_field(ipv4.totalLen, 45);
+
     // Swap Eth Addr to return the request back to host.
     modify_field(eth.dstAddr, eth.srcAddr);
     modify_field(eth.srcAddr, meta.tmpEthAddr);
@@ -204,12 +248,23 @@ action do_out_payload() {
     modify_field(udp.dstPort, SERVER_PORT);
 }
 
-
 // Tables
 
 table out_payload {
     actions {
         do_out_payload;
+    }
+}
+
+table mark_cache_get {
+    actions {
+        do_mark_cache_get_pkt;
+    }
+}
+
+table send_cache_get {
+    actions {
+        do_send_cache_get_pkt;
     }
 }
 
@@ -249,7 +304,6 @@ table return_pkt2 {
     }
 }
 
-
 table switch_pkt {
     reads {
         standard_metadata.ingress_port : exact;
@@ -268,8 +322,25 @@ table switch_pkt2 {
     }
 }
 
-
 table switch_pkt3 {
+    reads {
+        standard_metadata.ingress_port : exact;
+    }
+    actions {
+        set_nhop;
+    }
+}
+
+table switch_pkt4 {
+    reads {
+        standard_metadata.ingress_port : exact;
+    }
+    actions {
+        set_nhop;
+    }
+}
+
+table switch_pkt5 {
     reads {
         standard_metadata.ingress_port : exact;
     }
@@ -280,11 +351,10 @@ table switch_pkt3 {
 
 //
 
-
 // Egress Control
 control egress {
     if (valid(udp)) {
-        if (udp.dstPort == CLONE_PORT) {
+        if (udp.dstPort == CLONE_GET_PORT or udp.dstPort == CLONE_SET_PORT) {
             apply(clone_pkt);
         }
     }
@@ -301,6 +371,4 @@ table clone_pkt {
         do_clone_pkt;
     }
 }
-
-
 // /Egress Control
