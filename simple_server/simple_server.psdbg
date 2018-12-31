@@ -8,8 +8,8 @@
         }, 
         "#Version": "61.02", 
         "BreakpointSortOptions": {
-            "FilterByIndex": -1, 
-            "SecFilterIndex": -1, 
+            "FilterByIndex": 0, 
+            "SecFilterIndex": 0, 
             "ShowCodeBreakpoints": false, 
             "ShowDataBreakpoints": false, 
             "ShowMemoryBreakpoints": false
@@ -76,7 +76,7 @@
                     "ptn_Child1=ThreadWindow0", 
                     "[WorkState_v1_2.ThreadWindows.ThreadWindow0]", 
                     "ThreadName=Thread0///AgilioCX", 
-                    "Placement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPBOPPPPPPEABAAAAAEABAAAAAHCEAAAAAKIEAAAAA", 
+                    "Placement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPBOPPPPPPANAAAAAAANAAAAAADPDAAAAAGFEAAAAA", 
                     "TrackActiveThread=False", 
                     "ShowListView=False"
                 ], 

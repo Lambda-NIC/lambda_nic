@@ -107,10 +107,9 @@ control ingress {
             if (pload.jobId == 0) {
                 apply(add_payload);
                 apply(return_pkt);
-            }
-            else if (pload.jobId == 1) {
-                apply(send_cache_set);
-                apply(switch_pkt3);
+            } else if (pload.jobId == 1) {
+                apply(mark_cache_set);
+                //apply(switch_pkt3);
             } else if (pload.jobId == 2) {
                 apply(transform_img);
                 apply(return_pkt2);
@@ -118,8 +117,10 @@ control ingress {
         } else {
             if (udp.dstPort == INTERIM_PORT) {
                 apply(out_payload);
+                apply(switch_pkt2);
+            } else if (udp.dstPort == CLONE_PORT) {
+                apply(send_cache_set);
             }
-            apply(switch_pkt2);
         }
     } else {
         apply(switch_pkt);
@@ -156,14 +157,45 @@ action set_return_hop() {
 
 // Actions
 
+// Perform the grayscaler function.
 action do_grayscale_img() {
     grayscale_img();
 }
 
-action do_send_cache_set_pkt() {
-    send_cache_set_pkt();
+// Marking the incoming packets as cache and clone it at egress.
+action do_mark_cache_set_pkt() {
+    // Change UDP Port
+    modify_field(udp.dstPort, CLONE_PORT);
+    remove_header(pload);
 }
 
+// Reroute cloned packets to send cache information.
+action do_send_cache_set_pkt() {
+    add_header(memcached);
+
+    send_cache_set_pkt();
+    
+    // Swap Eth Addr to return the request back to host.
+    modify_field(eth.dstAddr, eth.srcAddr);
+    modify_field(eth.srcAddr, meta.tmpEthAddr);
+
+    // Swap IP Addr
+    modify_field(ipv4.dstAddr, ipv4.srcAddr);
+    modify_field(ipv4.srcAddr, meta.tmpIpAddr);
+
+    // Swap UDP Port
+    modify_field(udp.dstPort, MEMCACHED_PORT);
+    modify_field(udp.srcPort, MEMCACHED_PORT);
+
+    // Remove UDP
+    modify_field(udp.checksum, 0);
+
+    // Swap egress Port
+    modify_field(standard_metadata.egress_spec,
+                 standard_metadata.ingress_port);
+}
+
+// Fuunction to serve simple web request.
 action do_serve_request() {
     serve_request();
 }
@@ -178,6 +210,12 @@ action do_out_payload() {
 table out_payload {
     actions {
         do_out_payload;
+    }
+}
+
+table mark_cache_set {
+    actions {
+        do_mark_cache_set_pkt;
     }
 }
 
@@ -240,20 +278,29 @@ table switch_pkt3 {
     }
 }
 
-table switch_pkt4 {
-    reads {
-        standard_metadata.ingress_port : exact;
-    }
-    actions {
-        set_nhop;
-    }
-}
 //
 
 
 // Egress Control
 control egress {
-
+    if (valid(udp)) {
+        if (udp.dstPort == CLONE_PORT) {
+            apply(clone_pkt);
+        }
+    }
 }
+
+action do_clone_pkt() {
+    // Some session ID of 100.
+    clone_egress_pkt_to_ingress(100, i2e_mirror_info);
+}
+
+
+table clone_pkt {
+    actions {
+        do_clone_pkt;
+    }
+}
+
 
 // /Egress Control

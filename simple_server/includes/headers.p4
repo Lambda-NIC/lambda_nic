@@ -71,6 +71,37 @@ header_type meta_t {
     }
 }
 
+header_type memcached_binary_t {
+	fields {
+		magic : 8;
+		opcode : 8;
+		keyLen : 16;
+		extraLen : 8;
+		dataType : 8;
+		status : 16;
+		totalBodyLen : 32;
+		opaque : 32;
+		CAS : 64;
+        data: 80;
+    }
+}
+
+header memcached_binary_t memcached;
+
+header_type i2e_metadata_t {
+    fields {
+        ingress_tstamp    : 32;
+    }
+}
+
+metadata i2e_metadata_t i2e_metadata;
+
+field_list i2e_mirror_info {
+    i2e_metadata.ingress_tstamp;
+}
+
+
+
 metadata meta_t meta;
 
 primitive_action serve_request();
