@@ -17,8 +17,8 @@ DST_UDP_PORT = int(sys.argv[3])
 IFACE = "vf0_1"
 SRC_ETH_ADDR = "00:15:4d:00:%d%d:01" % (SRC_NUM, SRC_NUM)
 DST_ETH_ADDR = "00:15:4d:00:%d%d:01" % (DST_NUM, DST_NUM)
-SRC_IP = "20.20.2%d.101" % SRC_NUM
-DST_IP = "20.20.2%d.101" % DST_NUM
+SRC_IP = "10.10.10%d.101" % SRC_NUM
+DST_IP = "10.10.10%d.101" % DST_NUM
 
 class Sniffer(Thread):
     def  __init__(self, interface=IFACE):
