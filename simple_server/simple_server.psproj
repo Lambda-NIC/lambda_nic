@@ -90,14 +90,14 @@
                         ]
                     }, 
                     "settings": {
-                        "additional_options": "", 
+                        "additional_options": "-e", 
                         "all_header_ops": false, 
                         "debug_info": true, 
                         "default_table_size": 10, 
                         "define": [], 
                         "flowcache_enabled": true, 
                         "gro_enabled": true, 
-                        "implicit_header_valid": true, 
+                        "implicit_header_valid": false, 
                         "include_paths": [], 
                         "mac_ingress_timestamp": false, 
                         "mc_init": false, 
@@ -115,7 +115,7 @@
                     "tool": "p4compiler"
                 }, 
                 ".\\AgilioCX": {
-                    "build_required": false, 
+                    "build_required": true, 
                     "list_assignments": {
                         "i32.me0": [
                             "pif_app_nfd.list"
@@ -389,7 +389,7 @@
                     }, 
                     "list_type": "component", 
                     "settings": {
-                        "additional_options": "-Qno_decl_volatile -mIPOPT_nfp=2", 
+                        "additional_options": "-e -Qno_decl_volatile -mIPOPT_nfp=2", 
                         "alloc_microstore_size": 8192, 
                         "allow_mixing_with_other_modules": false, 
                         "asm_code_file": false, 
@@ -518,7 +518,7 @@
                     }, 
                     "list_type": "component", 
                     "settings": {
-                        "additional_options": "-Qno_decl_volatile -mIPOPT_nfp=2", 
+                        "additional_options": "-e -Qno_decl_volatile -mIPOPT_nfp=2", 
                         "alloc_microstore_size": 8192, 
                         "allow_mixing_with_other_modules": false, 
                         "asm_code_file": false, 
@@ -671,7 +671,7 @@
                     }, 
                     "list_type": "component", 
                     "settings": {
-                        "additional_options": "-Qno_decl_volatile -mIPOPT_nfp=2", 
+                        "additional_options": "-e -Qno_decl_volatile -mIPOPT_nfp=2", 
                         "alloc_microstore_size": 8192, 
                         "allow_mixing_with_other_modules": false, 
                         "asm_code_file": false, 
@@ -731,7 +731,7 @@
                     }, 
                     "list_type": "component", 
                     "settings": {
-                        "additional_options": "-Qno_decl_volatile -mIPOPT_nfp=2", 
+                        "additional_options": "-e -Qno_decl_volatile -mIPOPT_nfp=2", 
                         "alloc_microstore_size": 8192, 
                         "allow_mixing_with_other_modules": false, 
                         "asm_code_file": false, 
@@ -791,7 +791,7 @@
                     }, 
                     "list_type": "component", 
                     "settings": {
-                        "additional_options": "-Qno_decl_volatile -mIPOPT_nfp=2 -Qlmpt_reserve_option=0xc", 
+                        "additional_options": "-e -Qno_decl_volatile -mIPOPT_nfp=2 -Qlmpt_reserve_option=0xc", 
                         "alloc_microstore_size": 8192, 
                         "allow_mixing_with_other_modules": false, 
                         "asm_code_file": false, 
@@ -851,7 +851,7 @@
                     }, 
                     "list_type": "component", 
                     "settings": {
-                        "additional_options": "-Qno_decl_volatile -mIPOPT_nfp=2", 
+                        "additional_options": "-e -Qno_decl_volatile -mIPOPT_nfp=2", 
                         "alloc_microstore_size": 8192, 
                         "allow_mixing_with_other_modules": false, 
                         "asm_code_file": false, 
@@ -1008,7 +1008,7 @@
                     }, 
                     "list_type": "component", 
                     "settings": {
-                        "additional_options": "-Qno_decl_volatile -mIPOPT_nfp=2", 
+                        "additional_options": "-e -Qno_decl_volatile -mIPOPT_nfp=2", 
                         "alloc_microstore_size": 8192, 
                         "allow_mixing_with_other_modules": false, 
                         "asm_code_file": false, 
@@ -1116,7 +1116,7 @@
                     }, 
                     "list_type": "application", 
                     "settings": {
-                        "additional_options": "-Qno_decl_volatile -mIPOPT_nfp=2", 
+                        "additional_options": "-e -Qno_decl_volatile -mIPOPT_nfp=2", 
                         "alloc_microstore_size": 8192, 
                         "allow_mixing_with_other_modules": false, 
                         "asm_code_file": false, 
