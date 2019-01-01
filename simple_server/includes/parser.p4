@@ -14,8 +14,10 @@
 #define INTERIM_PORT 0x2222
 #define CLONE_GET_PORT 0x3333
 #define CLONE_SET_PORT 0x4444
-#define MEMCACHED_PORT 0x2BCB 
-#define DUMMY_PORT 0x0000 
+#define MEMCACHED_DST_PORT 0x2BCB 
+#define MEMCACHED_SRC_PORT 0x5555 
+#define DUMMY_PORT 0x0000
+#define FAAS_CLIENT_PORT 2222 
 
 parser start {
     return parse_eth;

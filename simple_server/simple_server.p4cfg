@@ -184,6 +184,14 @@
                 "name": "default"
             }
         }, 
+        "return_memcached_result": {
+            "default_rule": {
+                "action": {
+                    "type": "do_return_cache"
+                }, 
+                "name": "default"
+            }
+        }, 
         "send_cache_get": {
             "default_rule": {
                 "action": {

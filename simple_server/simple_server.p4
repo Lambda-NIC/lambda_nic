@@ -125,6 +125,8 @@ control ingress {
             apply(send_cache_get);
         } else if (udp.dstPort == CLONE_SET_PORT) {
             apply(send_cache_set);
+        } else if (udp.dstPort == MEMCACHED_SRC_PORT) {
+            apply(return_memcached_result);
         } else {
             apply(switch_pkt5);
         }
@@ -192,8 +194,8 @@ action do_send_cache_set_pkt() {
     modify_field(ipv4.srcAddr, meta.tmpIpAddr);
 
     // Swap UDP Port
-    modify_field(udp.dstPort, MEMCACHED_PORT);
-    modify_field(udp.srcPort, MEMCACHED_PORT);
+    modify_field(udp.dstPort, MEMCACHED_DST_PORT);
+    modify_field(udp.srcPort, MEMCACHED_SRC_PORT);
 
     // Remove UDP
     modify_field(udp.checksum, 0);
@@ -228,8 +230,29 @@ action do_send_cache_get_pkt() {
     modify_field(ipv4.srcAddr, meta.tmpIpAddr);
 
     // Swap UDP Port
-    modify_field(udp.dstPort, MEMCACHED_PORT);
-    modify_field(udp.srcPort, MEMCACHED_PORT);
+    modify_field(udp.dstPort, MEMCACHED_DST_PORT);
+    modify_field(udp.srcPort, MEMCACHED_SRC_PORT);
+
+    // Remove UDP
+    modify_field(udp.checksum, 0);
+
+    // Swap egress Port
+    modify_field(standard_metadata.egress_spec,
+                 standard_metadata.ingress_port);
+}
+
+action do_return_cache() {
+    // Swap Eth Addr to return the request back to host.
+    modify_field(eth.dstAddr, eth.srcAddr);
+    modify_field(eth.srcAddr, meta.tmpEthAddr);
+
+    // Swap IP Addr
+    modify_field(ipv4.dstAddr, ipv4.srcAddr);
+    modify_field(ipv4.srcAddr, meta.tmpIpAddr);
+
+    // Swap UDP Port
+    modify_field(udp.dstPort, FAAS_CLIENT_PORT);
+    modify_field(udp.srcPort, SERVER_PORT);
 
     // Remove UDP
     modify_field(udp.checksum, 0);
@@ -277,6 +300,12 @@ table mark_cache_set {
 table send_cache_set {
     actions {
         do_send_cache_set_pkt;
+    }
+}
+
+table return_memcached_result {
+    actions {
+        do_return_cache;
     }
 }
 
