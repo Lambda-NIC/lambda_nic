@@ -4,12 +4,15 @@ import timeit
 import threading
 
 def make_request(url, params, num_requests):
+    num_failures = 0
     for i in range(num_requests):
         try:
             res = requests.post(url, data = params)
         except requests.exceptions.ConnectionError:
-            pass
+            num_failures += 1
+            continue
         #print(res.status_code, res.text)
+    return num_failures
 
 class myThread(threading.Thread):
    def __init__(self, threadID, name, url, params, num_requests):
@@ -21,8 +24,8 @@ class myThread(threading.Thread):
       self.num_requests = num_requests
    def run(self):
       print ("Starting " + self.name)
-      make_request(url, params, num_requests)
-      print ("Exiting " + self.name)
+      num_failures = make_request(self.url, self.params, self.num_requests)
+      print ("Exiting %s, failures: %d", self.name, num_failures)
 
 
 BASE_URL =  "http://172.24.90.32:8001/api/v1/namespaces/openfaas/services/http:gateway:/proxy/function/"
