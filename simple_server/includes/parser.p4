@@ -17,7 +17,7 @@
 #define MEMCACHED_DST_PORT 0x2BCB 
 #define MEMCACHED_SRC_PORT 0x5555 
 #define DUMMY_PORT 0x0000
-#define FAAS_CLIENT_PORT 2222 
+//#define FAAS_CLIENT_PORT 2222 
 
 parser start {
     return parse_eth;
