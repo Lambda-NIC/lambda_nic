@@ -56,6 +56,8 @@ elif job_type == "docker":
         url = BASE_URL + "simpleserver"
     elif job_id == 1:
         url = BASE_URL + "imagetransform"
+        # TODO: Change image id later
+        params = str(3)
     elif job_id == 2 or job_id == 3 or job_id == 4:
         url = BASE_URL + "simplememcached"
         params = str(job_id)

@@ -10,5 +10,5 @@
 COUNTER=0
 while [  $COUNTER -lt $5 ]; do
     python3 make_job_request.py $1 $2 $3 $4
-    let COUNTER-=1
+    let COUNTER=COUNTER+1
 done
