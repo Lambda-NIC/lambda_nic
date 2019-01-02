@@ -5,7 +5,10 @@ import threading
 
 def make_request(url, params, num_requests):
     for i in range(num_requests):
-        res = requests.post(url, data = params)
+        try:
+            res = requests.post(url, data = params)
+        except requests.exceptions.ConnectionError:
+            pass
         #print(res.status_code, res.text)
 
 class myThread(threading.Thread):
