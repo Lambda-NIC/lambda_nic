@@ -3,6 +3,9 @@ import requests
 import timeit
 import threading
 
+DEBUG = False
+
+
 def make_request(url, params, num_requests):
     num_failures = 0
     for i in range(num_requests):
@@ -15,20 +18,24 @@ def make_request(url, params, num_requests):
     return num_failures
 
 class myThread(threading.Thread):
-   def __init__(self, threadID, name, url, params, num_requests):
-      threading.Thread.__init__(self)
-      self.threadID = threadID
-      self.name = name
-      self.url = url
-      self.params = params
-      self.num_requests = num_requests
-   def run(self):
-      print ("Starting " + self.name)
-      num_failures = make_request(self.url, self.params, self.num_requests)
-      print ("Exiting %s, failures: %d", self.name, num_failures)
+    def __init__(self, threadID, name, url, params, num_requests):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+        self.url = url
+        self.params = params
+        self.num_requests = num_requests
+        self.debug = DEBUG
+    def run(self):
+        if self.debug:
+            print ("Starting " + self.name)
+        num_failures = make_request(self.url, self.params, self.num_requests)
+        if self.debug:
+            print ("Exiting %s, failures: %d", self.name, num_failures)
 
 
-BASE_URL =  "http://172.24.90.32:8001/api/v1/namespaces/openfaas/services/http:gateway:/proxy/function/"
+#BASE_URL =  "http://172.24.90.32:8001/api/v1/namespaces/openfaas/services/http:gateway:/proxy/function/"
+BASE_URL =  "http://localhost:8001/api/v1/namespaces/openfaas/services/http:gateway:/proxy/function/"
 
 job_type = sys.argv[1]
 job_id = int(sys.argv[2])
