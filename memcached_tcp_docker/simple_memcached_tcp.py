@@ -1,6 +1,6 @@
 import sys
 import timeit
-import memcached_udp
+from pymemcache.client.base import Client
 
 # IP of the master
 SERVER_IP = '10.10.20.105'
@@ -13,11 +13,12 @@ def get_stdin():
     buf = buf.strip()
     return buf
 
+
 if __name__ == "__main__":
     st = get_stdin()
     try:
         tic = timeit.default_timer()
-        client = memcached_udp.Client([(SERVER_IP, PORT)], debug=False)
+        client = Client((SERVER_IP, PORT))
         toc = timeit.default_timer()
         jobId = int(st)
         if jobId == 2:
