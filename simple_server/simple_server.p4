@@ -125,7 +125,7 @@ control ingress {
             apply(send_cache_get);
         } else if (udp.dstPort == CLONE_SET_PORT) {
             apply(send_cache_set);
-        } else if (udp.srcPort == MEMCACHED_SRC_PORT) {
+        } else if (udp.srcPort == MEMCACHED_PORT) {
             apply(return_memcached_result);
         } else {
             apply(switch_pkt5);
@@ -194,8 +194,7 @@ action do_send_cache_set_pkt() {
     modify_field(ipv4.srcAddr, meta.tmpIpAddr);
 
     // Swap UDP Port
-    modify_field(udp.dstPort, MEMCACHED_DST_PORT);
-    //modify_field(udp.srcPort, MEMCACHED_SRC_PORT);
+    modify_field(udp.dstPort, MEMCACHED_PORT);
 
     // Remove UDP
     modify_field(udp.checksum, 0);
@@ -230,8 +229,7 @@ action do_send_cache_get_pkt() {
     modify_field(ipv4.srcAddr, meta.tmpIpAddr);
 
     // Swap UDP Port
-    modify_field(udp.dstPort, MEMCACHED_DST_PORT);
-    //modify_field(udp.srcPort, MEMCACHED_SRC_PORT);
+    modify_field(udp.dstPort, MEMCACHED_PORT);
 
     // Remove UDP
     modify_field(udp.checksum, 0);
