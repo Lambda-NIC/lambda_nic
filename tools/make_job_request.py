@@ -6,7 +6,21 @@ import threading
 def make_request(url, params, num_requests):
     for i in range(num_requests):
         res = requests.post(url, data = params)
-        print res.status_code, res.text
+        #print(res.status_code, res.text)
+
+class myThread(threading.Thread):
+   def __init__(self, threadID, name, url, params, num_requests):
+      threading.Thread.__init__(self)
+      self.threadID = threadID
+      self.name = name
+      self.url = url
+      self.params = params
+      self.num_requests = num_requests
+   def run(self):
+      print ("Starting " + self.name)
+      make_request(url, params, num_requests)
+      print ("Exiting " + self.name)
+
 
 BASE_URL =  "http://172.24.90.32:8001/api/v1/namespaces/openfaas/services/http:gateway:/proxy/function/"
 
@@ -14,8 +28,8 @@ job_type = sys.argv[1]
 job_id = int(sys.argv[2])
 num_requests = int(sys.argv[3])
 num_threads = int(sys.argv[4])
-if num_threads < 1 or num_threads > 8:
-    print "Num threads should be >= 1 and <= 8 "
+if num_threads < 1 or num_threads > 56:
+    print("Num threads should be >= 1 and <= 8 ")
     sys.exit(1)
 
 url = None
@@ -33,7 +47,7 @@ elif job_type == "docker":
         url = BASE_URL + "simplememcached"
         params = str(job_id)
 else:
-    print "Invalid job type"
+    print("Invalid job type")
     sys.exit(1)
 
 
@@ -43,17 +57,20 @@ else:
 jobs = []
 for i in range(0, num_threads):
     out_list = list()
-    thread = threading.Thread(target=make_request(url, params, num_requests))
+    thread = myThread(i, "Thread-%d" % i, url, params, num_requests)
     jobs.append(thread)
 
+print("Created %d threads" % len(jobs))
 
 tic = timeit.default_timer()
 # Start the threads (i.e. calculate the random number lists)
 for j in jobs:
     j.start()
 
+print("Started %d threads" % len(jobs))
+
 # Ensure all of the threads have finished
 for j in jobs:
     j.join()
 toc = timeit.default_timer()
-print "Total Time: ", toc - tic
+print("Total Time: ", toc - tic)
