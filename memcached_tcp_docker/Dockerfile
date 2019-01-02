@@ -25,25 +25,20 @@ RUN apk --no-cache add curl \
     
 # Add non root user
 
-RUN git clone https://github.com/Lambda-NIC/python-memcached-udp.git \
-    && cd python-memcached-udp \
-    && python setup.py install
-
 RUN addgroup -S app && adduser app -S -G app
 RUN chown app /home/app
 
-COPY simple_memcached.py /home/app 
+COPY simple_memcached_tcp.py /home/app 
 COPY requirements.txt /home/app
 
 WORKDIR /home/app
 
 USER app
 
-
-#RUN pip install --user --trusted-host pypi.python.org -r requirements.txt
+RUN pip install --user --trusted-host pypi.python.org -r requirements.txt
 
 # Populate example here - i.e. "cat", "sha512sum" or "node index.js"
-ENV fprocess="python simple_memcached.py"
+ENV fprocess="python simple_memcached_tcp.py"
 # Set to true to see request in function logs
 ENV write_debug="false"
 
