@@ -4,7 +4,7 @@ from pymemcache.client.base import Client
 
 # IP of the master
 SERVER_IP = '10.10.20.105'
-PORT = 11211
+PORT = 15000
 
 def get_stdin():
     buf = ""
