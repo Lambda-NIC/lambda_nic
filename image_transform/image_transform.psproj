@@ -85,12 +85,13 @@
                         "ext_obj_files": [], 
                         "obj_files": [], 
                         "p4_source_files": [
-                            ".\\simple_switch.p4"
+                            ".\\image_transform.p4", 
+                            ".\\plugin.c"
                         ]
                     }, 
                     "settings": {
                         "additional_options": "", 
-                        "all_header_ops": false, 
+                        "all_header_ops": true, 
                         "debug_info": true, 
                         "default_table_size": 10, 
                         "define": [], 
@@ -105,7 +106,7 @@
                         "nfd_enabled": true, 
                         "num_assign_worker_mes": -1, 
                         "obj_target": false, 
-                        "p4_user_config": ".\\simple_switch.p4cfg", 
+                        "p4_user_config": ".\\image_transform.p4cfg", 
                         "reduced_thread_usage": true, 
                         "shared_codestore": false, 
                         "zero_new_headers": false
@@ -328,14 +329,14 @@
                         "elf_64": true, 
                         "fill": "default", 
                         "fill_enable": false, 
-                        "gen_mem_map_file": false, 
+                        "gen_mem_map_file": true, 
                         "gen_seg_h_file": false, 
                         "insert_nffwmip": true, 
                         "insert_rt_syms": true, 
                         "island_partial_fw_map": {
                             "i8": "catamaran"
                         }, 
-                        "map_file": ".\\simple_switch_AgilioCX.map", 
+                        "map_file": ".\\image_transform_AgilioCX.map", 
                         "memories": {}, 
                         "nn_chains": {}, 
                         "produce_u_cstore_ecc": true, 
@@ -1107,7 +1108,8 @@
                             "$(SDKDIR)\\p4\\components\\dcfl\\me\\lib\\dcfl\\libdcfl.c", 
                             "$(SDKDIR)\\p4\\components\\flowenv\\me\\blocks\\blm\\libblm.c", 
                             "$(SDKDIR)\\p4\\components\\gro\\libgro.c", 
-                            "$(SDKDIR)\\p4\\components\\ng_nfd\\me\\blocks\\vnic\\libnfd.c"
+                            "$(SDKDIR)\\p4\\components\\ng_nfd\\me\\blocks\\vnic\\libnfd.c", 
+                            ".\\plugin.c"
                         ], 
                         "ext_obj_files": [], 
                         "obj_files": []
@@ -1480,6 +1482,9 @@
                 }, 
                 ".\\out\\pif_tables.c": {
                     "update": "YES"
+                }, 
+                ".\\plugin.c": {
+                    "update": "YES"
                 }
             }, 
             "microcode": {
@@ -1489,12 +1494,15 @@
                 "$(SDKDIR)\\p4\\components\\ng_nfd\\me\\blocks\\vnic\\pci_out_sb.uc": {}
             }, 
             "p4code": {
-                ".\\simple_switch.p4": {
+                ".\\image_transform.p4": {
+                    "update": "YES"
+                }, 
+                ".\\plugin.c": {
                     "update": "YES"
                 }
             }, 
             "p4userconfigs": {
-                ".\\simple_switch.p4cfg": {
+                ".\\image_transform.p4cfg": {
                     "update": "YES"
                 }
             }
@@ -1516,8 +1524,8 @@
                 }
             }
         }, 
-        "project_name": "simple_switch", 
-        "project_path": "Z:\\lambda_nic\\simple_switch\\simple_switch.psproj", 
+        "project_name": "image_transform", 
+        "project_path": "Z:\\lambda_nic\\image_transform\\image_transform.psproj", 
         "sim_startup_options": {
             "imported_var_data_file": "", 
             "sim_profile_started": true, 

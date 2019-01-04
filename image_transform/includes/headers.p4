@@ -23,14 +23,36 @@ header_type ipv4_t {
     }
 }
 
-
 header_type udp_t {
     fields {
         srcPort : 16;
         dstPort : 16;
+        length_ : 16;
+        checksum : 16;
+    }
+}
+
+header_type payload_t {
+    fields {
+        jobId   : 32;
+        p       : 128;
     }
 }
 
 header ethernet_t eth;
 header ipv4_t ipv4;
 header udp_t udp;
+header payload_t pload;
+
+header_type meta_t {
+    fields {
+        tmpEthAddr: 48;
+        tmpIpAddr: 32;
+        tmpUdpPort: 16;
+        tcpLength : 16;
+    }
+}
+
+metadata meta_t meta;
+
+primitive_action grayscale_img();
