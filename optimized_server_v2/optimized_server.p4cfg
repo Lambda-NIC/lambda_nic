@@ -1,0 +1,232 @@
+{
+    "tables": {
+        "out_payload": {
+            "default_rule": {
+                "action": {
+                    "type": "do_out_payload"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "switch_pkt4": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "v0.1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "ingress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "p0"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "p0"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "egress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "v0.1"
+                        }
+                    }
+                }
+            ]
+        }, 
+        "switch_pkt3": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "v0.1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "ingress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "p0"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "p0"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "egress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "v0.1"
+                        }
+                    }
+                }
+            ]
+        }, 
+        "switch_pkt2": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "p0"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "egress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "v0.1"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "v0.1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "ingress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "p0"
+                        }
+                    }
+                }
+            ]
+        }, 
+        "add_payload": {
+            "default_rule": {
+                "action": {
+                    "type": "do_serve_request"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "return_pkt": {
+            "default_rule": {
+                "action": {
+                    "type": "set_return_hop"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "mark_cache": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "clone_port": {
+                                "value": "0x3333"
+                            }
+                        }, 
+                        "type": "do_mark_cache_pkt"
+                    }, 
+                    "name": "get", 
+                    "match": {
+                        "pload.jobId": {
+                            "value": "2"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "clone_port": {
+                                "value": "0x4444"
+                            }
+                        }, 
+                        "type": "do_mark_cache_pkt"
+                    }, 
+                    "name": "set", 
+                    "match": {
+                        "pload.jobId": {
+                            "value": "3"
+                        }
+                    }
+                }
+            ]
+        }, 
+        "clone_pkt": {
+            "default_rule": {
+                "action": {
+                    "type": "do_clone_pkt"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "send_cache": {
+            "default_rule": {
+                "action": {
+                    "type": "do_send_cache_pkt"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "return_memcached_result": {
+            "default_rule": {
+                "action": {
+                    "type": "do_return_cache"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "switch_pkt": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "p0"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "egress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "v0.1"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "v0.1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "ingress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "p0"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
