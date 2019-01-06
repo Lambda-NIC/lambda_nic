@@ -9,13 +9,12 @@
 #define IMAGE_DIM 256
 #define CLONE_GET_PORT 0x3333
 #define CLONE_SET_PORT 0x4444
-#define MEMCACHED_PORT 0x2BCB
 
 // Location to read and write images for grayscale program.
-volatile __export __emem uint8_t image_input_ready = 0;
-volatile __export __emem uint8_t image_output_ready = 0;
-volatile __export __emem uint32_t input_image[IMAGE_DIM][IMAGE_DIM]; //RGBA
-volatile __export __emem uint8_t output_image[IMAGE_DIM][IMAGE_DIM];
+volatile __export __mem uint8_t image_input_ready = 0;
+volatile __export __mem uint8_t image_output_ready = 0;
+volatile __export __mem uint32_t input_image[IMAGE_DIM][IMAGE_DIM]; //RGBA
+volatile __export __mem uint8_t output_image[IMAGE_DIM][IMAGE_DIM];
 
 int pif_plugin_send_cache_pkt(EXTRACTED_HEADERS_T *headers,
                               MATCH_DATA_T *match_data) 
