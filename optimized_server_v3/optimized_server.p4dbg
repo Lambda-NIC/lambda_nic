@@ -1,0 +1,17 @@
+{
+    "breakpoints": [], 
+    "watches": [
+        {
+            "name": "i32:me0:ctx0.eth", 
+            "type": "headers"
+        }, 
+        {
+            "name": "i32:me0:ctx0.ipv4", 
+            "type": "headers"
+        }, 
+        {
+            "name": "i32:me0:ctx0.udp", 
+            "type": "headers"
+        }
+    ]
+}
