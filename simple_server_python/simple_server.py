@@ -12,7 +12,7 @@ SERVER_PORT = 10000
 IMAGE_ID = 3
 if_name = sys.argv[1]
 memcached_server_ip = sys.argv[2]
-memcached_port = sys.argv[3]
+memcached_port = int(sys.argv[3])
 
 server_ip = ni.ifaddresses(if_name)[ni.AF_INET][0]['addr']
 
