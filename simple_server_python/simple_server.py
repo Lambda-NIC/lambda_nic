@@ -72,7 +72,7 @@ class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
             toc = timeit.default_timer()
 
         if res:
-            selt = socket.sendto(res, self.client_address)
+            sent = socket.sendto(res, self.client_address)
             if DEBUG:
                 print >>sys.stderr, 'sent %s bytes back to %s' % (sent, address)
 
