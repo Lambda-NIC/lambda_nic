@@ -24,12 +24,14 @@ server_ip = ni.ifaddresses(if_name)[ni.AF_INET][0]['addr']
 print "Memcached info (%s:%s)" % (memcached_server_ip, memcached_port)
 client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=DEBUG)
 
-image_path = "./sample_images/img%s.png" % IMAGE_ID
-im = PIL.Image.open(image_path)
-I = np.asarray(im)
 
-def transform_image():
+
+def transform_image(img_id):
     tic = timeit.default_timer()
+    image_path = "./sample_images/img%s.png" % img_id
+    im = PIL.Image.open(image_path)
+    I = np.asarray(im)
+    toc = timeit.default_timer()
 
     J = np.zeros((256,256))
     for y in range(256):
@@ -38,7 +40,6 @@ def transform_image():
 
     J = J.astype(np.uint8)
     Image.fromarray(J, 'L')
-    toc = timeit.default_timer()
     return toc - tic
 
 
@@ -56,7 +57,7 @@ class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
         if job_id == 0:
             res = "hi:        "
         elif job_id == 1:
-            res = str(transform_image())
+            res = str(transform_image(IMAGE_ID))
         elif job_id == 2:
             tic = timeit.default_timer()
             res = client.get("hey")
