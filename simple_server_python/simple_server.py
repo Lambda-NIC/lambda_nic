@@ -1,4 +1,3 @@
-import socket
 import sys
 import timeit
 import numpy as np
@@ -27,14 +26,6 @@ client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=DEB
 image_path = "./sample_images/img%s.png" % IMAGE_ID
 im = PIL.Image.open(image_path)
 I = np.asarray(im)
-
-# Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-# Bind the socket to the port
-server_address = (server_ip, SERVER_PORT)
-print >>sys.stderr, 'starting up on %s port %s' % server_address
-sock.bind(server_address)
 
 def transform_image():
     tic = timeit.default_timer()
