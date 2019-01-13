@@ -67,6 +67,8 @@ while True:
     elif job_id == 3:
         tic = timeit.default_timer()
         res = client.set("hey", "dude")
+        if not res:
+            res = "STORED"
         toc = timeit.default_timer()
 
     if res:
