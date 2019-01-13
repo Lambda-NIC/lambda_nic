@@ -6,16 +6,18 @@ import PIL
 import memcached_udp
 from PIL import Image
 
-SERVER_IP = "10.10.20.105"
-PORT = "15000"
+SERVER_PORT = 10000
+server_ip = sys.argv[1]
+memcached_server_ip = sys.argv[2]
+memcached_port = sys.argv[3]
 
-client = memcached_udp.Client([(SERVER_IP, PORT)], debug=False)
+client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=False)
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Bind the socket to the port
-server_address = ('localhost', 10000)
+server_address = (server_ip, SERVER_PORT)
 print >>sys.stderr, 'starting up on %s port %s' % server_address
 sock.bind(server_address)
 
