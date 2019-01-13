@@ -6,6 +6,9 @@ import PIL
 import memcached_udp
 from PIL import Image
 
+SERVER_IP = "10.10.20.105"
+PORT = "15000"
+
 client = memcached_udp.Client([(SERVER_IP, PORT)], debug=False)
 
 # Create a TCP/IP socket
