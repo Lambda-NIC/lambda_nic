@@ -32,8 +32,8 @@
                     "DocPathName=Z:\\lambda_nic\\image_transform\\image_transform.p4", 
                     "DocumentString=P4SRC", 
                     "DocTemplateIndex=0", 
-                    "WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPBOPPPPPPEABAAAAAEABAAAAACAFAAAAAHCFAAAAA", 
-                    "IsActiveChildFrame=False", 
+                    "WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPBOPPPPPPEABAAAAAEABAAAAACAFAAAAAHCFAAAAA", 
+                    "IsActiveChildFrame=True", 
                     "IsFrameVisible=True", 
                     "[WorkState_v1_2.Frames.ChildFrames.Document-1]", 
                     "ptn_Child1=ViewFrame-0", 
@@ -41,8 +41,8 @@
                     "DocPathName=Z:\\lambda_nic\\image_transform\\includes\\headers.p4", 
                     "DocumentString=P4SRC", 
                     "DocTemplateIndex=0", 
-                    "WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPBOPPPPPPOBBAAAAAOBBAAAAAACFAAAAAFEFAAAAA", 
-                    "IsActiveChildFrame=True", 
+                    "WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPIPPPPPPPBOPPPPPPOBBAAAAAOBBAAAAAACFAAAAAFEFAAAAA", 
+                    "IsActiveChildFrame=False", 
                     "IsFrameVisible=True"
                 ], 
                 "Type": 4
