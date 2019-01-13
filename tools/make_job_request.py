@@ -51,6 +51,9 @@ params = None
 if job_type == "lambdanic":
     url = BASE_URL + "lambdanictest"
     params = str(job_id)
+elif job_type == "baremetal":
+    url = BASE_URL + "baremetaltest"
+    params = str(job_id)
 elif job_type == "docker":
     if job_id == 0:
         url = BASE_URL + "simpleserver"

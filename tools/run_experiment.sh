@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 # Arguments
-# 1. lambdanic or docker
+# 1. lambdanic, baremetal or docker
 # 2. job ID
 # 3. Number of requests per thread
 # 4. Number of threads
