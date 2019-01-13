@@ -58,10 +58,12 @@ while True:
     elif job_id == 2:
         tic = timeit.default_timer()
         res = client.get("hey")
+        print res
         toc = timeit.default_timer()
     elif job_id == 3:
         tic = timeit.default_timer()
         res = client.set("hey", "dude")
+        print res
         toc = timeit.default_timer()
 
     if res:
