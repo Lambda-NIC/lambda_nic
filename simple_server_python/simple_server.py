@@ -47,7 +47,7 @@ while True:
 
     print >>sys.stderr, 'received %s bytes from %s' % (len(data), address)
     print >>sys.stderr, data
-    d_tup = struct.unpack('I12s', data)
+    d_tup = struct.unpack('I16s', data)
     job_id = int(d_tup[0])
     res = None
     if job_id == 0:
