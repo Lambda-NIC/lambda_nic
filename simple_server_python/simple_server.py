@@ -3,6 +3,7 @@ import sys
 import timeit
 import numpy as np
 import PIL
+import memcached_udp
 from PIL import Image
 
 client = memcached_udp.Client([(SERVER_IP, PORT)], debug=False)
