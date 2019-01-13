@@ -55,11 +55,11 @@ while True:
     elif job_id == 1:
         res = transform_image(3)
         jobId = int(st)
-    elif jobId == 2:
+    elif job_id == 2:
         tic = timeit.default_timer()
         res = client.get("hey")
         toc = timeit.default_timer()
-    elif jobId == 3:
+    elif job_id == 3:
         tic = timeit.default_timer()
         res = client.set("hey", "dude")
         toc = timeit.default_timer()
