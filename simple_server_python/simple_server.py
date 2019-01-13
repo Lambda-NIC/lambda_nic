@@ -6,7 +6,11 @@ import PIL
 import memcached_udp
 import netifaces as ni
 import struct
+import SocketServer
+import threading
+
 from PIL import Image
+
 
 SERVER_PORT = 10000
 IMAGE_ID = 3
@@ -46,35 +50,54 @@ def transform_image():
     return toc - tic
 
 
-while True:
-    if DEBUG:
-        print >> sys.stderr, '\nwaiting to receive message'
-    data, address = sock.recvfrom(4096)
+class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
 
-    if DEBUG:
-        print >>sys.stderr, 'received %s bytes from %s' % (len(data), address)
-        print >>sys.stderr, data
-    d_tup = struct.unpack('>I16s', data)
-    job_id = int(d_tup[0])
-    res = None
-    if job_id == 0:
-        res = "hi:        "
-    elif job_id == 1:
-        res = str(transform_image())
-    elif job_id == 2:
-        tic = timeit.default_timer()
-        res = client.get("hey")
-        if not res:
-            res = "Not Found"
-        toc = timeit.default_timer()
-    elif job_id == 3:
-        tic = timeit.default_timer()
-        res = client.set("hey", "dude")
-        if not res:
-            res = "STORED"
-        toc = timeit.default_timer()
-
-    if res:
-        sent = sock.sendto(res, address)
+    def handle(self):
+        data = self.request[0]
+        socket = self.request[1]
+        current_thread = threading.current_thread()
         if DEBUG:
-            print >>sys.stderr, 'sent %s bytes back to %s' % (sent, address)
+            print("{}: client: {}, wrote: {}".format(current_thread.name, self.client_address, data))
+        d_tup = struct.unpack('>I16s', data)
+        job_id = int(d_tup[0])
+        res = None
+        if job_id == 0:
+            res = "hi:        "
+        elif job_id == 1:
+            res = str(transform_image())
+        elif job_id == 2:
+            tic = timeit.default_timer()
+            res = client.get("hey")
+            if not res:
+                res = "Not Found"
+            toc = timeit.default_timer()
+        elif job_id == 3:
+            tic = timeit.default_timer()
+            res = client.set("hey", "dude")
+            if not res:
+                res = "STORED"
+            toc = timeit.default_timer()
+
+        if res:
+            selt = socket.sendto(res, self.client_address)
+            if DEBUG:
+                print >>sys.stderr, 'sent %s bytes back to %s' % (sent, address)
+
+class ThreadedUDPServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer):
+    pass
+
+
+if __name__ == "__main__":
+    server = ThreadedUDPServer((server_ip, SERVER_PORT), ThreadedUDPRequestHandler)
+
+    server_thread = threading.Thread(target=server.serve_forever)
+    server_thread.daemon = True
+
+    try:
+        server_thread.start()
+        print("Server started at {} port {}".format(HOST, PORT))
+        while True: time.sleep(100)
+    except (KeyboardInterrupt, SystemExit):
+        server.shutdown()
+        server.server_close()
+        exit()
