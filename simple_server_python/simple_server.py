@@ -15,7 +15,8 @@ memcached_port = sys.argv[3]
 
 server_ip = ni.ifaddresses(if_name)[ni.AF_INET][0]['addr']
 
-client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=False)
+print "Memcached info (%s:%s)" % (memcached_server_ip, memcached_port)
+client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=True)
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -53,14 +54,17 @@ while True:
     if job_id == 0:
         res = "hi:        "
     elif job_id == 1:
+        print "Transforming image"
         res = transform_image(3)
-        jobId = int(st)
+        print res
     elif job_id == 2:
+        print "Sending get"
         tic = timeit.default_timer()
         res = client.get("hey")
         print res
         toc = timeit.default_timer()
     elif job_id == 3:
+        print "Sending set"
         tic = timeit.default_timer()
         res = client.set("hey", "dude")
         print res
