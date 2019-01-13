@@ -13,11 +13,12 @@ IMAGE_ID = 3
 if_name = sys.argv[1]
 memcached_server_ip = sys.argv[2]
 memcached_port = int(sys.argv[3])
+DEBUG = False
 
 server_ip = ni.ifaddresses(if_name)[ni.AF_INET][0]['addr']
 
 print "Memcached info (%s:%s)" % (memcached_server_ip, memcached_port)
-client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=True)
+client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=DEBUG)
 
 image_path = "./sample_images/img%s.png" % IMAGE_ID
 im = PIL.Image.open(image_path)
@@ -46,11 +47,13 @@ def transform_image():
 
 
 while True:
-    print >>sys.stderr, '\nwaiting to receive message'
+    if DEBUG:
+        print >> sys.stderr, '\nwaiting to receive message'
     data, address = sock.recvfrom(4096)
 
-    print >>sys.stderr, 'received %s bytes from %s' % (len(data), address)
-    print >>sys.stderr, data
+    if DEBUG:
+        print >>sys.stderr, 'received %s bytes from %s' % (len(data), address)
+        print >>sys.stderr, data
     d_tup = struct.unpack('>I16s', data)
     job_id = int(d_tup[0])
     res = None
@@ -73,4 +76,5 @@ while True:
 
     if res:
         sent = sock.sendto(res, address)
-        print >>sys.stderr, 'sent %s bytes back to %s' % (sent, address)
+        if DEBUG:
+            print >>sys.stderr, 'sent %s bytes back to %s' % (sent, address)
