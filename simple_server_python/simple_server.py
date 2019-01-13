@@ -4,12 +4,16 @@ import timeit
 import numpy as np
 import PIL
 import memcached_udp
+import netifaces as ni
+import struct
 from PIL import Image
 
 SERVER_PORT = 10000
-server_ip = sys.argv[1]
+if_name = sys.argv[1]
 memcached_server_ip = sys.argv[2]
 memcached_port = sys.argv[3]
+
+server_ip = ni.ifaddresses(if_name)[ni.AF_INET][0]['addr']
 
 client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=False)
 
@@ -43,8 +47,8 @@ while True:
 
     print >>sys.stderr, 'received %s bytes from %s' % (len(data), address)
     print >>sys.stderr, data
-    data = data.strip()
-    job_id = int(data)
+    d_tup = struct.unpack('I12s', data)
+    job_id = int(d_tup[0])
     res = None
     if job_id == 0:
         res = "hi:        "
