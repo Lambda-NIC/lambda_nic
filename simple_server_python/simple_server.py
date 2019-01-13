@@ -48,26 +48,22 @@ while True:
 
     print >>sys.stderr, 'received %s bytes from %s' % (len(data), address)
     print >>sys.stderr, data
-    d_tup = struct.unpack('I16s', data)
+    d_tup = struct.unpack('>I16s', data)
     job_id = int(d_tup[0])
     res = None
     if job_id == 0:
         res = "hi:        "
     elif job_id == 1:
-        print "Transforming image"
-        res = transform_image(3)
-        print res
+        res = str(transform_image(3))
     elif job_id == 2:
-        print "Sending get"
         tic = timeit.default_timer()
         res = client.get("hey")
-        print res
+        if not res:
+            res = "Not Found"
         toc = timeit.default_timer()
     elif job_id == 3:
-        print "Sending set"
         tic = timeit.default_timer()
         res = client.set("hey", "dude")
-        print res
         toc = timeit.default_timer()
 
     if res:
