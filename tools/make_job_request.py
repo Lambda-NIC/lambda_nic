@@ -64,6 +64,10 @@ elif job_type == "docker":
     elif job_id == 2 or job_id == 3 or job_id == 4:
         url = BASE_URL + "simplememcached"
         params = str(job_id)
+elif job_type == "dockertcp":
+    if job_id == 2 or job_id == 3 or job_id == 4:
+        url = BASE_URL + "simplememcachedtcp"
+        params = str(job_id)
 else:
     print("Invalid job type")
     sys.exit(1)
