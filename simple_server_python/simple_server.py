@@ -78,8 +78,8 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
                 print('sent %s bytes back to %s' % (sent, self.client_address))
 
 class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, server_addr, handler):
+        super().__init__(server_addr, handler)
         self.manager = multiprocessing.Manager()
         self.return_dict = self.manager.dict()
 
