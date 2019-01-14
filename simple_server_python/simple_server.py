@@ -5,7 +5,7 @@ import PIL
 import memcached_udp
 import netifaces as ni
 import struct
-import SocketServer
+import socketserver
 import threading
 import time
 
@@ -21,7 +21,7 @@ DEBUG = False
 
 server_ip = ni.ifaddresses(if_name)[ni.AF_INET][0]['addr']
 
-print "Memcached info (%s:%s)" % (memcached_server_ip, memcached_port)
+print("Memcached info (%s:%s)" % (memcached_server_ip, memcached_port))
 client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=DEBUG)
 
 
@@ -44,7 +44,7 @@ def transform_image(img_id):
     return toc - tic
 
 
-class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
+class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         data = self.request[0]
@@ -75,9 +75,9 @@ class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
         if res:
             sent = socket.sendto(res, self.client_address)
             if DEBUG:
-                print >>sys.stderr, 'sent %s bytes back to %s' % (sent, self.client_address)
+                print('sent %s bytes back to %s' % (sent, self.client_address))
 
-class ThreadedUDPServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer):
+class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
     pass
 
 
