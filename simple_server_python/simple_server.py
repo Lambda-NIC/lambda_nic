@@ -60,20 +60,16 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
         elif job_id == 1:
             res = str(transform_image(IMAGE_ID))
         elif job_id == 2:
-            tic = timeit.default_timer()
             res = client.get("hey")
             if not res:
                 res = "Not Found"
-            toc = timeit.default_timer()
         elif job_id == 3:
-            tic = timeit.default_timer()
             res = client.set("hey", "dude")
             if not res:
                 res = "STORED"
-            toc = timeit.default_timer()
 
         if res:
-            sent = socket.sendto(res, self.client_address)
+            sent = socket.sendto(res.encode(), self.client_address)
             if DEBUG:
                 print('sent %s bytes back to %s' % (sent, self.client_address))
 
