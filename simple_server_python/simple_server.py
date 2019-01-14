@@ -31,6 +31,7 @@ def transform_image(img_id):
     image_path = "./sample_images/img%s.png" % img_id
     im = PIL.Image.open(image_path)
     I = np.asarray(im)
+    im.close()
     toc = timeit.default_timer()
 
     J = np.zeros((256,256))
