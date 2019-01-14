@@ -21,6 +21,11 @@ DEBUG = False
 
 server_ip = ni.ifaddresses(if_name)[ni.AF_INET][0]['addr']
 
+image_path = "./sample_images/img%s.png" % img_id
+im = PIL.Image.open(image_path)
+I = np.asarray(im)
+im.close()
+
 print("Memcached info (%s:%s)" % (memcached_server_ip, memcached_port))
 client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=DEBUG)
 
@@ -28,12 +33,6 @@ client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=DEB
 
 def transform_image(img_id):
     tic = timeit.default_timer()
-    image_path = "./sample_images/img%s.png" % img_id
-    im = PIL.Image.open(image_path)
-    I = np.asarray(im)
-    im.close()
-    toc = timeit.default_timer()
-
     J = np.zeros((256,256))
     for y in range(256):
         for x in range(256):
@@ -41,6 +40,7 @@ def transform_image(img_id):
 
     J = J.astype(np.uint8)
     Image.fromarray(J, 'L')
+    toc = timeit.default_timer()
     return toc - tic
 
 
