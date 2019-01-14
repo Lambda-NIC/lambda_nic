@@ -8,6 +8,7 @@ import struct
 import socketserver
 import threading
 import time
+import multiprocessing
 
 from PIL import Image
 
@@ -30,8 +31,7 @@ print("Memcached info (%s:%s)" % (memcached_server_ip, memcached_port))
 client = memcached_udp.Client([(memcached_server_ip, memcached_port)], debug=DEBUG)
 
 
-
-def transform_image():
+def transform_image(client_addr, return_dict):
     tic = timeit.default_timer()
     J = np.zeros((256,256))
     for y in range(256):
@@ -41,7 +41,7 @@ def transform_image():
     J = J.astype(np.uint8)
     Image.fromarray(J, 'L')
     toc = timeit.default_timer()
-    return toc - tic
+    return_dict[client_addr] = toc - tic
 
 
 class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
@@ -58,7 +58,11 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
         if job_id == 0:
             res = "hi:        "
         elif job_id == 1:
-            res = str(transform_image())
+            #res = str(transform_image())
+            p = multiprocessing.Process(target=transform_image, args=(self.client_address, self.return_duct))
+            p.start()
+            p.join()
+            res = self.return_dict.pop(self.client_address, None)
         elif job_id == 2:
             res = client.get("hey")
             if not res:
@@ -74,8 +78,10 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
                 print('sent %s bytes back to %s' % (sent, self.client_address))
 
 class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
-    pass
-
+    def __init__(self):
+        super().__init__()
+        self.manager = multiprocessing.Manager()
+        self.return_dict = self.manager.dict()
 
 if __name__ == "__main__":
     server = ThreadedUDPServer((server_ip, SERVER_PORT), ThreadedUDPRequestHandler)
