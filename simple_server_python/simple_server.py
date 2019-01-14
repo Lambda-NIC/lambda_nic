@@ -64,6 +64,7 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
             p = multiprocessing.Process(target=transform_image, args=(self.client_address, return_dict))
             p.start()
             p.join()
+            res = str(return_dict.pop(self.client_address, None))
         elif job_id == 2:
             res = client.get("hey")
             if not res:
