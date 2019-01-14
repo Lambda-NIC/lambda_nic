@@ -46,11 +46,6 @@ def transform_image(client_addr, return_dict):
 
 class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
 
-    def __init__(self, request, client_addr, server):
-        super().__init__(request, client_addr, server)
-        self.manager = multiprocessing.Manager()
-        self.return_dict = self.manager.dict()
-
     def handle(self):
         data = self.request[0]
         socket = self.request[1]
@@ -64,10 +59,11 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
             res = "hi:        "
         elif job_id == 1:
             #res = str(transform_image())
-            p = multiprocessing.Process(target=transform_image, args=(self.client_address, self.return_dict))
+            manager = multiprocessing.Manager()
+            return_dict = manager.dict()
+            p = multiprocessing.Process(target=transform_image, args=(self.client_address, return_dict))
             p.start()
             p.join()
-            res = self.return_dict.pop(self.client_address, None)
         elif job_id == 2:
             res = client.get("hey")
             if not res:
