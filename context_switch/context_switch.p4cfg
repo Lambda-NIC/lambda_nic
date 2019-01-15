@@ -1,0 +1,168 @@
+{
+    "tables": {
+        "out_payload": {
+            "default_rule": {
+                "action": {
+                    "type": "do_out_payload"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "switch_pkt3": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "v0.1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "ingress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "p0"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "p0"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "egress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "v0.1"
+                        }
+                    }
+                }
+            ]
+        }, 
+        "switch_pkt2": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "p0"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "egress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "v0.1"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "v0.1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "ingress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "p0"
+                        }
+                    }
+                }
+            ]
+        }, 
+        "switch_pkt1": {
+            "rules": [
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "v0.1"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "ingress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "p0"
+                        }
+                    }
+                }, 
+                {
+                    "action": {
+                        "data": {
+                            "port": {
+                                "value": "p0"
+                            }
+                        }, 
+                        "type": "set_nhop"
+                    }, 
+                    "name": "egress", 
+                    "match": {
+                        "standard_metadata.ingress_port": {
+                            "value": "v0.1"
+                        }
+                    }
+                }
+            ]
+        }, 
+        "add_payload2": {
+            "default_rule": {
+                "action": {
+                    "type": "do_serve_request2"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "add_payload3": {
+            "default_rule": {
+                "action": {
+                    "type": "do_serve_request3"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "add_payload1": {
+            "default_rule": {
+                "action": {
+                    "type": "do_serve_request1"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "return_pkt1": {
+            "default_rule": {
+                "action": {
+                    "type": "set_return_hop"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "return_pkt3": {
+            "default_rule": {
+                "action": {
+                    "type": "set_return_hop"
+                }, 
+                "name": "default"
+            }
+        }, 
+        "return_pkt2": {
+            "default_rule": {
+                "action": {
+                    "type": "set_return_hop"
+                }, 
+                "name": "default"
+            }
+        }
+    }
+}
