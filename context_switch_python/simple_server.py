@@ -22,13 +22,13 @@ DEBUG = False
 server_ip = ni.ifaddresses(if_name)[ni.AF_INET][0]['addr']
 
 def simple_response1():
-    return "hi:         "
+    return "hi:             "
 
 def simple_response2():
-    return "bye:        "
+    return "bye:            "
 
 def simple_response3():
-    return "welcome:    "
+    return "welcome:        "
 
 class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
 
