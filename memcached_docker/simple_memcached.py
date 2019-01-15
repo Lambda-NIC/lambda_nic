@@ -16,21 +16,11 @@ def get_stdin():
 if __name__ == "__main__":
     st = get_stdin()
     try:
-        tic = timeit.default_timer()
         client = memcached_udp.Client([(SERVER_IP, PORT)], debug=False)
-        toc = timeit.default_timer()
         jobId = int(st)
         if jobId == 2:
-            tic = timeit.default_timer()
-            res = client.get("hey")
-            toc = timeit.default_timer()
-            print res, toc - tic
+            print client.get("hey")
         elif jobId == 3:
-            tic = timeit.default_timer()
-            res = client.set("hey", "dude")
-            toc = timeit.default_timer()
-            print res, toc - tic
-        elif jobId == 4:
-            print toc - tic
+            print client.set("hey", "dude")
     except Exception as error:
         print "Error: %s" % error

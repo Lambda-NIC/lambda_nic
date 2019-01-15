@@ -33,7 +33,6 @@ RUN addgroup -S app && adduser app -S -G app
 RUN chown app /home/app
 
 COPY simple_memcached.py /home/app 
-COPY requirements.txt /home/app
 
 WORKDIR /home/app
 
