@@ -83,7 +83,8 @@ class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
     pass
 
 if __name__ == "__main__":
-    server = ThreadedUDPServer((server_ip, SERVER_PORT), ThreadedUDPRequestHandler)
+    #server = ThreadedUDPServer((server_ip, SERVER_PORT), ThreadedUDPRequestHandler)
+    server = socketserver.ForkingUDPServer((server_ip, SERVER_PORT), ThreadedUDPRequestHandler)
 
     server_thread = threading.Thread(target=server.serve_forever)
     server_thread.daemon = True
