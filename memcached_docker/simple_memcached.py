@@ -19,8 +19,8 @@ if __name__ == "__main__":
         client = memcached_udp.Client([(SERVER_IP, PORT)], debug=False)
         jobId = int(st)
         if jobId == 2:
-            print client.get("hey")
+            print(client.get("hey"))
         elif jobId == 3:
-            print client.set("hey", "dude")
+            print(client.set("hey", "dude"))
     except Exception as error:
-        print "Error: %s" % error
+        print("Error: %s" % error)

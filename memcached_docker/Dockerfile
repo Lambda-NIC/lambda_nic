@@ -1,4 +1,4 @@
-FROM python:2.7.15-alpine 
+FROM python:3.7.2-alpine3.8
 
 ENTRYPOINT []
 
@@ -27,7 +27,7 @@ RUN apk --no-cache add curl \
 
 RUN git clone https://github.com/Lambda-NIC/python-memcached-udp.git \
     && cd python-memcached-udp \
-    && python setup.py install
+    && python3 setup.py install
 
 RUN addgroup -S app && adduser app -S -G app
 RUN chown app /home/app
@@ -42,7 +42,7 @@ USER app
 #RUN pip install --user --trusted-host pypi.python.org -r requirements.txt
 
 # Populate example here - i.e. "cat", "sha512sum" or "node index.js"
-ENV fprocess="python simple_memcached.py"
+ENV fprocess="python3 simple_memcached.py"
 # Set to true to see request in function logs
 ENV write_debug="false"
 
