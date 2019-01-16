@@ -1,4 +1,4 @@
-FROM node:8.9.4-alpine
+FROM python:3.7.2-alpine3.8
 
 ENTRYPOINT []
 
@@ -10,6 +10,11 @@ ENTRYPOINT []
 #RUN chmod +x /usr/bin/fwatchdog
 
 RUN mkdir -p /home/app
+
+RUN apk add --update alpine-sdk
+RUN apk add build-base python-dev py-pip jpeg-dev zlib-dev
+
+ENV LIBRARY_PATH=/lib:/usr/lib
 
 RUN apk --no-cache add curl \
     && echo "Pulling watchdog binary from Github." \
@@ -23,12 +28,14 @@ RUN apk --no-cache add curl \
 RUN addgroup -S app && adduser app -S -G app
 RUN chown app /home/app
 
+COPY simple_server.py /home/app 
+
 WORKDIR /home/app
 
 USER app
 
 # Populate example here - i.e. "cat", "sha512sum" or "node index.js"
-ENV fprocess="echo hi: "
+ENV fprocess="python3 simple_server.py"
 # Set to true to see request in function logs
 ENV write_debug="false"
 
