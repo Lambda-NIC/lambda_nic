@@ -54,8 +54,8 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
                 print('sent %s bytes back to %s' % (sent, self.client_address))
 
 if __name__ == "__main__":
-    server = socketserver.ThreadingUDPServer((server_ip, SERVER_PORT), ThreadedUDPRequestHandler)
-    #server = socketserver.ForkingUDPServer((server_ip, SERVER_PORT), ThreadedUDPRequestHandler)
+    #server = socketserver.ThreadingUDPServer((server_ip, SERVER_PORT), ThreadedUDPRequestHandler)
+    server = socketserver.ForkingUDPServer((server_ip, SERVER_PORT), ThreadedUDPRequestHandler)
 
     server_thread = threading.Thread(target=server.serve_forever)
     server_thread.daemon = True

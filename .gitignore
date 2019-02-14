@@ -63,3 +63,4 @@ Makefile-nfp4build
 
 template
 build
+*.pyc
