@@ -78,6 +78,7 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
             sent = socket.sendto(res.encode(), self.client_address)
             if DEBUG:
                 print('sent %s bytes back to %s' % (sent, self.client_address))
+                print(res)
 
 class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
     pass
