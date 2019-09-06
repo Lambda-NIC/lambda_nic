@@ -63,3 +63,8 @@ Makefile-nfp4build
 
 template
 build
+
+dist
+__pycache__
+simple_server.egg-info
+*.pyc
