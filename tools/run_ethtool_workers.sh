@@ -14,12 +14,11 @@ ip route del 10.10.20.105/32
 ip route del 10.10.30.105/32
 ip route add 10.10.20.105/32 dev $1
 ip route add 10.10.30.105/32 dev $1
-ip route add 10.10.0.0/16 dev $1
 ip route del 10.10.101.101/32
 ip route del 10.10.102.101/32
 ip route del 10.10.103.101/32
 ip route del 10.10.104.101/32
-ip route add 10.10.101.101/32 dev 
+ip route add 10.10.101.101/32 dev $1
 ip route add 10.10.102.101/32 dev $1
 ip route add 10.10.103.101/32 dev $1
 ip route add 10.10.104.101/32 dev $1
