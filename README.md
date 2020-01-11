@@ -6,7 +6,7 @@ Set of Experiments for Lambda NIC project
 
 ```
 rmmod nfp
-insmod nfp nfp_dev_cpp=1
+modprobe nfp nfp_dev_cpp=1 or insmod nfp nfp_dev_cpp=1
 nfp-nffw unload -n 0
 systemctl start nfp-sdk6-rte
 /opt/netronome/p4/bin/rtecli design-unload

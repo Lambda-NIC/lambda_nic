@@ -1,0 +1,4 @@
+netifaces
+Pillow
+numpy
+https://github.com/idanmo/python-memcached-udp/archive/master.zip
