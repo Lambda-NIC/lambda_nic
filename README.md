@@ -11,7 +11,7 @@ nfp-nffw unload -n 0
 systemctl start nfp-sdk6-rte
 /opt/netronome/p4/bin/rtecli design-unload
 /opt/netronome/p4/bin/rtecli design-load -f AgilioCX.nffw -p out/pif_design.json -c simple_server.p4cfg
-lambda_nic/tools/run_ethtool.sh vf0_1
+lambda_nic/tools/run_ethtool_worker.sh vf0_1
 ```
 
 ## To build a P4/Sandbox C program from Linux.
@@ -24,5 +24,5 @@ nfp4build -p ./out/ -o AgilioCX.nffw -l hydrogen -4 <filename>.p4 -c <filename>.
 
 ## Things to note when you add a machine.
 
-1. Make sure to check `/opt/nfp_pif/scripts/pif_ctl_nfd.sh` and change the base MAC for vfs.
+1. Make sure to check `/opt/nfp_pif/scripts/pif_ctl_nfd.sh` and change the base MAC for vfs. (Check this when you see ICMP reroutes too)
 
